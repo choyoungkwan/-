@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>Before / After 분할</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+  .panel{position:absolute;inset:0;overflow:hidden;}
+  .panel img{width:1920px;height:1080px;object-fit:cover;display:block;}
+  .ph{position:absolute;inset:0;display:flex;align-items:center;
+      font-size:56px;font-weight:800;letter-spacing:.02em;}
+  .before .ph{justify-content:flex-start;padding-left:160px;background:linear-gradient(135deg,#4a4a4a,#2c2c2c);color:#cfcfcf;}
+  .after  .ph{justify-content:flex-end;padding-right:160px;}
+  .after  .ph{background:
+      radial-gradient(900px 700px at 70% 10%,#fffdf7,rgba(255,253,247,0) 60%),
+      linear-gradient(160deg,#fbf8f0,#efe8da);color:#2f9e6b;}
+  .after{clip-path:inset(0 0 0 50%);}
+  .divider{position:absolute;top:0;bottom:0;left:50%;width:6px;background:#fff;
+           box-shadow:0 0 24px rgba(0,0,0,.4);transform:translateX(-50%);}
+  .divider::after{content:'';position:absolute;top:50%;left:50%;width:74px;height:74px;border-radius:50%;
+    transform:translate(-50%,-50%);background:#fff;box-shadow:0 8px 28px rgba(0,0,0,.35);}
+  .divider::before{content:'⟷';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:34px;color:#2f9e6b;z-index:2;font-weight:900;}
+  .chip{position:absolute;top:64px;padding:16px 34px;border-radius:999px;font-size:34px;font-weight:800;
+        color:#fff;backdrop-filter:blur(2px);}
+  .chip.b{left:64px;background:rgba(20,20,20,.6);}
+  .chip.a{right:64px;background:rgba(47,158,107,.85);}
+  .caption{bottom:96px;}
+</style></head>
+<body><div class="stage">
+  <div class="panel before"><img id="imgB" src="../assets/before.jpg" onerror="this.style.display='none'"><div class="ph">개선 전 · BEFORE</div></div>
+  <div class="panel after" id="after"><img id="imgA" src="../assets/after.jpg" onerror="this.style.display='none'"><div class="ph">개선 후 · AFTER</div></div>
+  <div class="divider" id="div"></div>
+  <div class="chip b" id="chipB">개선 전</div>
+  <div class="chip a" id="chipA">개선 후</div>
+  <div class="caption" id="cap" style="opacity:0"></div>
+</div>
+<script src="../assets/anim.js"></script>
+<script>
+/* assets/before.jpg, assets/after.jpg 를 같은 앵글 사진으로 넣으면 자동 반영됩니다.
+   없으면 라벨 플레이스홀더로 표시됩니다. */
+const CONFIG={ caption:'35년 된 마을에, <span class="hl">새로운 뜨락</span>' };
+const $=id=>document.getElementById(id);
+Scene.define(8,(t,A)=>{
+  const {E,span,lerp,clamp01}=A;
+  // 디바이더 와이프: 30% → 62% 살짝 움직여 전/후 비교감
+  const sweep = 0.5 + 0.16*Math.sin(span(t,.8,7,E.inOutQuad)*Math.PI - Math.PI/2 + Math.PI/2);
+  const pos = lerp(0.62, 0.38, span(t,1.0,6.5,E.inOutCubic));   // 좌→우 이동(after 영역 넓어짐)
+  $('after').style.clipPath=`inset(0 0 0 ${pos*100}%)`;
+  $('div').style.left=`${pos*100}%`;
+  $('chipB').style.opacity=span(t,.4,1.1,E.outCubic);
+  $('chipA').style.opacity=span(t,.6,1.3,E.outCubic);
+  const c=span(t,5.4,6.3,E.outCubic);
+  $('cap').style.opacity=c; $('cap').style.transform=`translateX(-50%) translateY(${lerp(16,0,c)}px)`;
+  $('cap').innerHTML=CONFIG.caption;
+});
+</script>
+</body></html>

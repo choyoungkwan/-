@@ -1,0 +1,63 @@
+/* ============================================================
+   우만뜨락 모션그래픽 · 공통 스타일
+   1920x1080 / 30fps 기준 · Pretendard
+   ============================================================ */
+@font-face{font-family:'Pretendard';font-weight:400;src:url('../assets/fonts/Pretendard-Regular.woff2') format('woff2');}
+@font-face{font-family:'Pretendard';font-weight:500;src:url('../assets/fonts/Pretendard-Medium.woff2') format('woff2');}
+@font-face{font-family:'Pretendard';font-weight:600;src:url('../assets/fonts/Pretendard-SemiBold.woff2') format('woff2');}
+@font-face{font-family:'Pretendard';font-weight:700;src:url('../assets/fonts/Pretendard-Bold.woff2') format('woff2');}
+@font-face{font-family:'Pretendard';font-weight:800;src:url('../assets/fonts/Pretendard-ExtraBold.woff2') format('woff2');}
+@font-face{font-family:'Pretendard';font-weight:900;src:url('../assets/fonts/Pretendard-Black.woff2') format('woff2');}
+
+:root{
+  --ink:#1d2b36;        /* 본문 진한 잉크 */
+  --ink-soft:#52606b;   /* 보조 텍스트 */
+  --paper:#f6f2e9;      /* 따뜻한 종이 배경 */
+  --paper-2:#efe8da;
+  --green:#2f9e6b;      /* 뜨락(garden) 메인 그린 */
+  --green-deep:#1f7a51;
+  --amber:#f0a431;      /* 온기 amber */
+  --blue:#3a7ca5;       /* 수원시 블루 */
+  --line:#d9cfbd;
+  --shadow:0 18px 60px rgba(40,30,10,.12);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000;}
+body{font-family:'Pretendard',sans-serif;color:var(--ink);}
+
+/* 무대: 항상 1920x1080 */
+.stage{
+  position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:
+    radial-gradient(1200px 800px at 78% -10%, #fffdf7 0%, rgba(255,253,247,0) 60%),
+    linear-gradient(160deg,#fbf8f0 0%,var(--paper) 46%,var(--paper-2) 100%);
+}
+/* 어두운 배경 변형 (타이틀/엔딩용) */
+.stage.dark{
+  background:
+    radial-gradient(1400px 900px at 26% -10%, #1f4a39 0%, rgba(31,74,57,0) 58%),
+    linear-gradient(155deg,#14222a 0%,#172b27 55%,#101b21 100%);
+  color:#fff;
+}
+
+/* 안전영역 가이드(렌더 시 숨김) */
+.safe{position:absolute;inset:54px 96px;border:1px dashed rgba(0,0,0,.12);pointer-events:none;display:none;}
+
+/* 공통 자막 바 (하단) */
+.caption{
+  position:absolute;left:50%;bottom:96px;transform:translateX(-50%);
+  font-weight:700;font-size:46px;letter-spacing:-.02em;color:var(--ink);
+  background:rgba(255,255,255,.0);padding:0 10px;white-space:nowrap;
+  text-align:center;
+}
+.stage.dark .caption{color:#fff;}
+.caption .hl{color:var(--green-deep);}
+.stage.dark .caption .hl{color:#7fe0ad;}
+
+/* 텍스처 그레인(아주 옅게) */
+.grain{position:absolute;inset:0;opacity:.04;pointer-events:none;mix-blend-mode:multiply;
+  background-image:radial-gradient(rgba(0,0,0,.5) 1px,transparent 1px);background-size:3px 3px;}
+
+/* 유틸 */
+.mono-num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum";}

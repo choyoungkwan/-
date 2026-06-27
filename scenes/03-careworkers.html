@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>인포그래픽③ 돌봄 종사자</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+  .head{position:absolute;left:96px;top:96px;font-weight:800;font-size:60px;letter-spacing:-.03em;color:var(--ink);line-height:1.12;}
+  .head .s{display:block;font-size:32px;font-weight:700;color:var(--green-deep);margin-bottom:8px;}
+  .big{position:absolute;right:110px;top:120px;text-align:right;}
+  .big .n{font-weight:900;font-size:200px;line-height:.82;letter-spacing:-.05em;color:var(--green-deep);}
+  .big .n .u{font-size:72px;font-weight:800;color:var(--ink-soft);margin-left:6px;}
+  .big .l{font-size:34px;font-weight:700;color:var(--ink-soft);margin-top:8px;letter-spacing:-.02em;}
+  .gridwrap{position:absolute;left:96px;right:96px;top:432px;}
+  .grid{display:grid;grid-template-columns:repeat(10,1fr);gap:12px 14px;}
+  .grid svg{width:100%;height:78px;display:block;}
+  .grid path{fill:#e0d8c7;transition:none;}
+  .legend{position:absolute;left:96px;bottom:96px;font-size:28px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:12px;}
+  .legend svg{width:26px;height:34px;} .legend path{fill:var(--green);}
+</style></head>
+<body><div class="stage">
+  <div class="grain"></div>
+  <div class="head" id="head"><span class="s">우만동을 지키는 손길</span>마을의 돌봄은<br>사람이 만듭니다</div>
+  <div class="big"><div class="n"><span id="num">0</span><span class="u">명</span></div><div class="l" id="biglab"></div></div>
+  <div class="gridwrap"><div class="grid" id="grid"></div></div>
+  <div class="legend" id="legend"></div>
+  <div class="caption" id="cap" style="opacity:0"></div>
+</div>
+<script src="../assets/anim.js"></script>
+<script>
+/* ===== 편집 포인트 (실제 수치로 교체) ===== */
+const CONFIG = {
+  total: 480,          // 돌봄 종사자 수 ← 실제 수치로 교체
+  perIcon: 10,         // 아이콘 1개 = 10명
+  cols: 10, rows: 5,
+  bigLabel: '지역 내 돌봄 종사자',
+  caption: '지역 내 돌봄 종사자 <span class="hl">480명</span>',
+};
+/* ========================================= */
+const PERSON='M50 8c10 0 18 8 18 18s-8 18-18 18-18-8-18-18S40 8 50 8zM22 96c0-20 12-34 28-34s28 14 28 34v6H22z';
+const ICONS = CONFIG.cols*CONFIG.rows;
+const filledTarget = Math.min(ICONS, Math.round(CONFIG.total/CONFIG.perIcon));
+const grid=document.getElementById('grid');
+for(let i=0;i<ICONS;i++) grid.insertAdjacentHTML('beforeend',`<svg viewBox="0 0 100 108"><path d="${PERSON}"/></svg>`);
+const paths=[...grid.querySelectorAll('path')];
+const svgs=[...grid.querySelectorAll('svg')];
+document.getElementById('legend').innerHTML=`<svg viewBox="0 0 100 108"><path d="${PERSON}"/></svg> 아이콘 1개 = ${CONFIG.perIcon}명`;
+document.getElementById('biglab').textContent=CONFIG.bigLabel;
+const $=id=>document.getElementById(id);
+
+Scene.define(12, (t,A)=>{
+  const {E,span,lerp,fmt,clamp01}=A;
+  $('head').style.opacity=span(t,.3,1.2,E.outCubic);
+  $('head').style.transform=`translateY(${lerp(20,0,span(t,.3,1.2,E.outCubic))}px)`;
+
+  // 픽토그램 채우기 2.0s → 8.5s
+  const fillP = span(t,2.0,8.5,E.inOutCubic);
+  const filledNow = filledTarget*fillP;
+  paths.forEach((p,i)=>{
+    const local = clamp01(filledNow - i);            // 이 아이콘의 채움 0..1
+    if(local>0){
+      p.style.fill = '#2f9e6b';
+      const pop = i < filledNow-1 ? 1 : lerp(.7,1, E.outBack(local));
+      svgs[i].style.transform=`scale(${pop})`;
+      svgs[i].style.transformOrigin='bottom center';
+    } else { p.style.fill='#e0d8c7'; svgs[i].style.transform='scale(1)'; }
+  });
+  // 숫자 카운트업 (채움과 동기)
+  $('num').textContent = fmt(Math.round(CONFIG.total*fillP));
+  document.querySelector('.big').style.opacity=span(t,1.6,2.3,E.outCubic);
+  document.querySelector('.legend').style.opacity=span(t,2.2,3.0,E.outCubic);
+
+  const c=span(t,9.0,9.8,E.outCubic);
+  $('cap').style.opacity=c;
+  $('cap').style.transform=`translateX(-50%) translateY(${lerp(16,0,c)}px)`;
+  $('cap').innerHTML=CONFIG.caption;
+});
+</script>
+</body></html>

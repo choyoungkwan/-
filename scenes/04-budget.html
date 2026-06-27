@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>인포그래픽④ 예산 합쳐짐</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+  .head{position:absolute;left:0;right:0;top:120px;text-align:center;font-weight:800;font-size:58px;letter-spacing:-.03em;color:var(--ink);}
+  .head .s{display:block;font-size:32px;font-weight:700;color:var(--green-deep);margin-bottom:10px;}
+  .src{position:absolute;top:430px;width:520px;height:230px;border-radius:34px;padding:46px 44px;
+       box-shadow:var(--shadow);color:#fff;}
+  .src .t{font-size:38px;font-weight:700;opacity:.92;letter-spacing:-.02em;}
+  .src .v{font-size:74px;font-weight:900;margin-top:12px;letter-spacing:-.03em;line-height:1;}
+  .src .v .u{font-size:38px;font-weight:800;opacity:.9;margin-left:6px;}
+  .srcA{left:96px;background:linear-gradient(135deg,#f0a431,#e0852a);}
+  .srcB{right:96px;background:linear-gradient(135deg,#3a7ca5,#2c6184);}
+  .plus{position:absolute;left:50%;top:512px;transform:translateX(-50%);font-size:78px;font-weight:900;color:var(--ink-soft);}
+  .result{position:absolute;left:50%;top:470px;transform:translateX(-50%) scale(.6);
+       width:640px;height:250px;border-radius:40px;background:linear-gradient(135deg,#34a574,#1f7a51);
+       box-shadow:0 30px 80px rgba(31,122,81,.4);color:#fff;display:flex;flex-direction:column;
+       align-items:center;justify-content:center;opacity:0;}
+  .result .t{font-size:34px;font-weight:700;opacity:.9;}
+  .result .b{font-size:84px;font-weight:900;letter-spacing:-.03em;margin-top:6px;}
+  svg.flow{position:absolute;inset:0;width:1920px;height:1080px;pointer-events:none;}
+  .caption{bottom:120px;}
+</style></head>
+<body><div class="stage">
+  <div class="grain"></div>
+  <div class="head" id="head"><span class="s">주민의 공간은 이렇게 마련됐습니다</span>두 개의 예산이, 하나로</div>
+  <svg class="flow"><path id="fa" fill="none" stroke="#f0a431" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 18"></path>
+                    <path id="fb" fill="none" stroke="#3a7ca5" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 18"></path></svg>
+  <div class="src srcA" id="sa"><div class="t">특별조정교부금</div><div class="v"><span class="vv">0</span><span class="u">억</span></div></div>
+  <div class="src srcB" id="sb"><div class="t">수원시 매칭</div><div class="v"><span class="vv">0</span><span class="u">억</span></div></div>
+  <div class="plus" id="plus">+</div>
+  <div class="result" id="res"><div class="t">주민이 함께 쓰는 공간</div><div class="b">우만뜨락</div></div>
+  <div class="caption" id="cap" style="opacity:0"></div>
+</div>
+<script src="../assets/anim.js"></script>
+<script>
+/* ===== 편집 포인트 (실제 수치로 교체) ===== */
+const CONFIG = {
+  amountA: 7, amountB: 7,   // 억 단위 ← 실제 수치로 교체 (모르면 단위/문구만 두고 숫자는 가려도 됨)
+  caption: '특별조정교부금 + 수원시 매칭 <span class="hl">→ 주민의 공간</span>',
+};
+/* ========================================= */
+const $=id=>document.getElementById(id);
+// 흐름선: 두 박스 하단 중앙 → 결과 박스 상단 중앙
+function curve(x1,y1,x2,y2){const mx=(x1+x2)/2;return `M${x1} ${y1} C ${x1} ${(y1+y2)/2}, ${x2} ${(y1+y2)/2}, ${x2} ${y2}`;}
+$('fa').setAttribute('d',curve(356,660,960,640));
+$('fb').setAttribute('d',curve(1564,660,960,640));
+const faLen=$('fa').getTotalLength(), fbLen=$('fb').getTotalLength();
+$('fa').style.strokeDasharray=faLen; $('fb').style.strokeDasharray=fbLen;
+
+Scene.define(12, (t,A)=>{
+  const {E,span,lerp,clamp01,fmt}=A;
+  $('head').style.opacity=span(t,.3,1.2,E.outCubic);
+  $('head').style.transform=`translateY(${lerp(18,0,span(t,.3,1.2,E.outCubic))}px)`;
+
+  // 소스 박스 등장
+  const a=span(t,1.1,1.8,E.outBack), b=span(t,1.4,2.1,E.outBack);
+  $('sa').style.opacity=clamp01(span(t,1.1,1.6,E.outCubic));
+  $('sa').style.transform=`translateY(${lerp(40,0,clamp01(a))}px)`;
+  $('sb').style.opacity=clamp01(span(t,1.4,1.9,E.outCubic));
+  $('sb').style.transform=`translateY(${lerp(40,0,clamp01(b))}px)`;
+  $('plus').style.opacity=span(t,1.9,2.4,E.outCubic);
+  // 금액 카운트업
+  const ca=span(t,1.8,3.6,E.outExpo);
+  $('sa').querySelector('.vv').textContent=fmt(Math.round(CONFIG.amountA*ca));
+  $('sb').querySelector('.vv').textContent=fmt(Math.round(CONFIG.amountB*ca));
+
+  // 흐름선 그려지기 4.2 → 6.6
+  const fl=span(t,4.2,6.6,E.inOutCubic);
+  $('fa').style.strokeDashoffset=faLen*(1-fl);
+  $('fb').style.strokeDashoffset=fbLen*(1-fl);
+  // 소스 박스 가운데로 수렴 + 페이드 (6.2 → 7.6)
+  const conv=span(t,6.2,7.6,E.inOutCubic);
+  $('sa').style.transform=`translate(${lerp(0,604,conv)}px,${lerp(0,40,conv)}px) scale(${lerp(1,.6,conv)})`;
+  $('sb').style.transform=`translate(${lerp(0,-604,conv)}px,${lerp(0,40,conv)}px) scale(${lerp(1,.6,conv)})`;
+  $('sa').style.opacity=clamp01(1-span(t,6.6,7.5,E.inOutQuad));
+  $('sb').style.opacity=clamp01(1-span(t,6.6,7.5,E.inOutQuad));
+  $('plus').style.opacity=clamp01(span(t,1.9,2.4,E.outCubic))*clamp01(1-span(t,6.2,6.9));
+
+  // 결과 박스 등장(팝)
+  const r=span(t,7.0,8.0,E.outBack);
+  $('res').style.opacity=clamp01(span(t,7.0,7.5,E.outCubic));
+  $('res').style.transform=`translateX(-50%) scale(${lerp(.6,1,clamp01(r))})`;
+
+  const c=span(t,8.6,9.4,E.outCubic);
+  $('cap').style.opacity=c;
+  $('cap').style.transform=`translateX(-50%) translateY(${lerp(16,0,c)}px)`;
+  $('cap').innerHTML=CONFIG.caption;
+});
+</script>
+</body></html>

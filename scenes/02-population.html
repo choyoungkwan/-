@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>인포그래픽② 인구 수치</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+  .head{position:absolute;left:96px;top:104px;font-weight:800;font-size:64px;letter-spacing:-.03em;color:var(--ink);line-height:1.12;}
+  .head .s{display:block;font-size:34px;font-weight:700;color:var(--green-deep);margin-bottom:10px;}
+  .cards{position:absolute;left:96px;right:96px;top:300px;display:flex;gap:46px;}
+  .card{flex:1;background:#fff;border-radius:36px;box-shadow:var(--shadow);padding:64px 56px 58px;
+        border:1px solid #efe7d6;position:relative;overflow:hidden;}
+  .card .ico{font-size:74px;line-height:1;margin-bottom:26px;}
+  .card .num{font-weight:900;font-size:118px;letter-spacing:-.04em;line-height:.9;color:var(--ink);}
+  .card .num .u{font-size:52px;font-weight:800;margin-left:8px;color:var(--ink-soft);}
+  .card .lab{margin-top:20px;font-size:38px;font-weight:700;color:var(--ink-soft);letter-spacing:-.02em;}
+  .card .bar{position:absolute;left:0;bottom:0;height:12px;width:100%;}
+  .card.c1 .num,.card.c1 .bar{color:var(--amber);} .card.c1 .bar{background:var(--amber);}
+  .card.c2 .num,.card.c2 .bar{color:var(--green-deep);} .card.c2 .bar{background:var(--green);}
+  .card.c3 .num,.card.c3 .bar{color:var(--blue);} .card.c3 .bar{background:var(--blue);}
+</style></head>
+<body><div class="stage">
+  <div class="grain"></div>
+  <div class="head" id="head"><span class="s">우만동, 지난 10년</span></div>
+  <div class="cards">
+    <div class="card c1" id="cd0"><div class="ico">🧸</div><div class="num"><span class="v">0</span><span class="u"></span></div><div class="lab"></div><div class="bar"></div></div>
+    <div class="card c2" id="cd1"><div class="ico">👵</div><div class="num"><span class="v">0</span><span class="u"></span></div><div class="lab"></div><div class="bar"></div></div>
+    <div class="card c3" id="cd2"><div class="ico">🏠</div><div class="num"><span class="v">0</span><span class="u"></span></div><div class="lab"></div><div class="bar"></div></div>
+  </div>
+  <div class="caption" id="cap" style="opacity:0">아이들이 떠난 자리</div>
+</div>
+<script src="../assets/anim.js"></script>
+<script>
+/* ===== 편집 포인트 (실제 수치로 교체) ===== */
+const CONFIG = {
+  headline: '아이들은 줄고,<br>어르신은 늘었습니다',
+  cards: [
+    { to: 4,    unit: '곳',  label: '문 닫은 어린이집' },     // ← 실제 수치
+    { to: 3200, unit: '명',  label: '65세 이상 주민' },        // ← 실제 수치
+    { to: 880,  unit: '가구', label: '홀로 사는 어르신' },     // ← 실제 수치
+  ],
+  caption: '아이들이 떠난 자리',
+};
+/* ========================================= */
+document.getElementById('head').insertAdjacentHTML('beforeend', CONFIG.headline);
+const cards=[0,1,2].map(i=>document.getElementById('cd'+i));
+cards.forEach((c,i)=>{c.querySelector('.u').textContent=CONFIG.cards[i].unit;c.querySelector('.lab').textContent=CONFIG.cards[i].label;});
+const $=id=>document.getElementById(id);
+
+Scene.define(11, (t,A)=>{
+  const {E,span,lerp,fmt,clamp01}=A;
+  $('head').style.opacity = span(t,.3,1.2,E.outCubic);
+  $('head').style.transform = `translateY(${lerp(22,0,span(t,.3,1.2,E.outCubic))}px)`;
+
+  CONFIG.cards.forEach((cfg,i)=>{
+    const inAt = 1.4 + i*0.55;
+    const app = span(t,inAt,inAt+0.7,E.outBack);
+    const card = cards[i];
+    card.style.opacity = clamp01(span(t,inAt,inAt+0.5,E.outCubic));
+    card.style.transform = `translateY(${lerp(60,0,clamp01(app))}px) scale(${lerp(.96,1,clamp01(app))})`;
+    // count up
+    const cp = span(t, inAt+0.25, inAt+2.6, E.outExpo);
+    card.querySelector('.v').textContent = fmt(Math.round(cfg.to*cp));
+    // bar grow
+    card.querySelector('.bar').style.transform = `scaleX(${cp})`;
+    card.querySelector('.bar').style.transformOrigin='left';
+  });
+
+  const c=span(t,8.4,9.2,E.outCubic);
+  $('cap').style.opacity=c;
+  $('cap').style.transform=`translateX(-50%) translateY(${lerp(16,0,c)}px)`;
+});
+</script>
+</body></html>

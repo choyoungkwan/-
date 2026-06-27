@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>인포그래픽① 35년 타임라인</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+  .kicker{position:absolute;left:96px;top:90px;font-weight:700;font-size:34px;color:var(--green-deep);letter-spacing:-.01em;}
+  .kicker .dot{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--amber);margin-right:14px;transform:translateY(1px);}
+  .head{position:absolute;left:96px;top:150px;font-weight:800;font-size:66px;letter-spacing:-.03em;color:var(--ink);line-height:1.1;}
+  .head b{color:var(--green-deep);}
+  .chartwrap{position:absolute;left:80px;top:300px;width:1760px;height:600px;}
+  svg{width:100%;height:100%;overflow:visible;}
+  .axis{stroke:var(--line);stroke-width:3;}
+  .ylab,.xlab{font-family:'Pretendard';fill:var(--ink-soft);font-weight:600;}
+  .ylab{font-size:26px;}
+  .xlab{font-size:30px;font-weight:700;}
+  .gline{stroke:#e7ddc9;stroke-width:2;stroke-dasharray:2 10;stroke-linecap:round;}
+  .readout{position:absolute;right:110px;top:150px;text-align:right;font-weight:900;color:var(--green-deep);line-height:.86;}
+  .readout .pct{font-size:170px;letter-spacing:-.05em;}
+  .readout .lab{font-size:36px;font-weight:700;color:var(--ink-soft);margin-top:10px;letter-spacing:-.02em;}
+  .readout .sub{font-size:28px;font-weight:600;color:var(--amber);margin-top:6px;}
+</style></head>
+<body><div class="stage">
+  <div class="grain"></div>
+  <div class="kicker"><span class="dot"></span><span id="kick"></span></div>
+  <div class="head" id="head"></div>
+  <div class="chartwrap">
+    <svg viewBox="0 0 1760 600" id="svg">
+      <g id="grid"></g>
+      <line class="axis" x1="150" y1="500" x2="1700" y2="500"></line>
+      <line class="axis" x1="150" y1="40" x2="150" y2="500"></line>
+      <g id="ylabs"></g>
+      <g id="xlabs"></g>
+      <path id="area" fill="url(#g1)" opacity="0"></path>
+      <path id="line" fill="none" stroke="#2f9e6b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"></path>
+      <circle id="dot" r="13" fill="#1f7a51" stroke="#fff" stroke-width="5" opacity="0"></circle>
+      <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#2f9e6b" stop-opacity=".30"></stop>
+        <stop offset="1" stop-color="#2f9e6b" stop-opacity="0"></stop>
+      </linearGradient></defs>
+    </svg>
+  </div>
+  <div class="readout" id="readout" style="opacity:0">
+    <div class="pct"><span id="pnum">0</span>%</div>
+    <div class="lab">65세 이상 인구 비율</div>
+    <div class="sub" id="rsub"></div>
+  </div>
+  <div class="caption" id="cap" style="opacity:0"></div>
+</div>
+
+<script src="../assets/anim.js"></script>
+<script>
+/* ===== 편집 포인트 (실제 수치로 교체) ===== */
+const CONFIG = {
+  yearStart: 1991, yearEnd: 2026,
+  rateStart: 8,    rateEnd: 27,        // 65세 이상 비율 %  ← 실제 수치로 교체
+  ticks: [1991, 2000, 2010, 2020, 2026],
+  kicker: '수원시 팔달구 · 우만동 1단지',
+  head: '입주 <b>35년</b>,<br>마을이 함께 나이 들었습니다',
+};
+/* ========================================= */
+
+const X0=150, X1=1700, Y0=500, YTOP=60;     // 플롯 영역
+const rmax = Math.ceil((CONFIG.rateEnd+4)/5)*5;
+const fx = f => X0 + (X1-X0)*f;                       // 0..1 → x
+const fy = r => Y0 - (Y0-YTOP)*(r/rmax);              // 비율 → y
+const rateAt = f => CONFIG.rateStart + (CONFIG.rateEnd-CONFIG.rateStart)*Math.pow(f,1.55);
+
+// 곡선 샘플 + path
+const N=120, pts=[];
+for(let i=0;i<=N;i++){const f=i/N;pts.push([fx(f),fy(rateAt(f))]);}
+const linePath = pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+document.getElementById('line').setAttribute('d', linePath);
+const lineEl=document.getElementById('line');
+const LEN=lineEl.getTotalLength();
+lineEl.style.strokeDasharray=LEN;
+
+// grid + y labels
+const grid=document.getElementById('grid'), ylabs=document.getElementById('ylabs');
+for(let r=0;r<=rmax;r+=5){const y=fy(r);
+  grid.insertAdjacentHTML('beforeend',`<line class="gline" x1="150" y1="${y}" x2="1700" y2="${y}"></line>`);
+  ylabs.insertAdjacentHTML('beforeend',`<text class="ylab" x="120" y="${y+9}" text-anchor="end">${r}</text>`);
+}
+const xlabs=document.getElementById('xlabs');
+CONFIG.ticks.forEach(yr=>{const f=(yr-CONFIG.yearStart)/(CONFIG.yearEnd-CONFIG.yearStart);
+  xlabs.insertAdjacentHTML('beforeend',`<text class="xlab" x="${fx(f)}" y="558" text-anchor="middle">${yr}</text>`);
+});
+document.getElementById('kick').textContent=CONFIG.kicker;
+document.getElementById('head').innerHTML=CONFIG.head;
+
+const $=id=>document.getElementById(id);
+
+Scene.define(11, (t,A)=>{
+  const {E,span,clamp01,lerp,fmt}=A;
+  // 인트로
+  $('head').style.opacity = span(t,.4,1.4,E.outCubic);
+  $('head').style.transform = `translateY(${lerp(24,0,span(t,.4,1.4,E.outCubic))}px)`;
+  document.querySelector('.kicker').style.opacity = span(t,.1,.8,E.outCubic);
+
+  // 그래프 스윕  1.8s → 7.6s
+  const sw = span(t,1.8,7.6,E.inOutCubic);          // 0..1 진행
+  lineEl.style.strokeDashoffset = LEN*(1-sw);
+  // area: 현재 head x 까지 클립
+  const headX = fx(sw);
+  const headR = rateAt(sw);
+  const headY = fy(headR);
+  const areaPts = pts.filter(p=>p[0]<=headX);
+  if(areaPts.length){
+    let d='M'+X0+' '+Y0+' ';
+    d+=areaPts.map(p=>'L'+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+    d+=' L'+headX.toFixed(1)+' '+headY.toFixed(1)+' L'+headX.toFixed(1)+' '+Y0+' Z';
+    $('area').setAttribute('d',d);
+  }
+  $('area').style.opacity = span(t,2.0,2.6,E.outCubic);
+  const dot=$('dot');
+  dot.setAttribute('cx',headX); dot.setAttribute('cy',headY);
+  dot.style.opacity = sw>0&&sw<1 ? 1 : span(t,7.4,7.9,E.outCubic);
+
+  // 큰 % 리드아웃 — 스윕 head 값 따라감 (우상단 고정)
+  const ro=span(t,2.0,2.7,E.outCubic);
+  $('readout').style.opacity = ro;
+  $('readout').style.transform = `translateY(${lerp(16,0,ro)}px)`;
+  $('pnum').textContent = Math.round(headR);
+  // 스윕 끝나면 1991 대비 증가폭 표기
+  $('rsub').style.opacity = span(t,7.7,8.5,E.outCubic);
+  $('rsub').textContent = `1991년 ${CONFIG.rateStart}% 대비 ▲${CONFIG.rateEnd-CONFIG.rateStart}%p`;
+
+  // 자막
+  const c=span(t,8.6,9.4,E.outCubic);
+  const cap=$('cap'); cap.style.opacity=c; cap.style.transform=`translateX(-50%) translateY(${lerp(16,0,c)}px)`;
+  cap.innerHTML = `입주 <span class="hl">35년</span>, 65세 이상 ${CONFIG.rateStart}% <span class="hl">→ ${CONFIG.rateEnd}%</span>`;
+});
+</script>
+</body></html>

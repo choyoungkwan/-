@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>클로징 · 로고 엔딩</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+  .wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .word{font-size:120px;font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1;}
+  .word .g{color:#7fe0ad;}
+  .thx{font-size:46px;font-weight:700;color:#cfe9da;margin-top:30px;letter-spacing:-.01em;}
+  .logos{display:flex;gap:40px;margin-top:96px;}
+  .logo{min-width:340px;height:150px;border:2px solid rgba(255,255,255,.28);border-radius:22px;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+        background:rgba(255,255,255,.04);}
+  .logo .ph{font-size:24px;font-weight:600;color:#8fb6a3;letter-spacing:.04em;}
+  .logo .nm{font-size:38px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+  .foot{position:absolute;bottom:90px;width:100%;text-align:center;font-size:28px;color:#7f9b8c;font-weight:600;}
+</style></head>
+<body><div class="stage dark">
+  <div class="grain"></div>
+  <div class="wrap">
+    <div class="word" id="word">우만<span class="g">뜨락</span></div>
+    <div class="thx" id="thx">함께해 주셔서 감사합니다</div>
+    <div class="logos" id="logos">
+      <div class="logo"><div class="ph">주최 · 운영</div><div class="nm">○○종합사회복지관</div></div>
+      <div class="logo"><div class="ph">후원</div><div class="nm">수원시</div></div>
+      <div class="logo"><div class="ph">운영법인</div><div class="nm">사회복지법인 ○○○</div></div>
+    </div>
+  </div>
+  <div class="foot" id="foot">※ 로고 자리 — 실제 로고 PNG로 교체하세요</div>
+</div>
+<script src="../assets/anim.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const logos=[...document.querySelectorAll('.logo')];
+Scene.define(15,(t,A)=>{
+  const {E,span,lerp,clamp01}=A;
+  const w=span(t,.4,1.6,E.outCubic);
+  $('word').style.opacity=w; $('word').style.transform=`translateY(${lerp(24,0,w)}px) scale(${lerp(.96,1,w)})`;
+  const th=span(t,1.4,2.4,E.outCubic);
+  $('thx').style.opacity=th; $('thx').style.transform=`translateY(${lerp(16,0,th)}px)`;
+  logos.forEach((l,i)=>{const a=span(t,2.6+i*0.4,3.4+i*0.4,E.outBack);
+    l.style.opacity=clamp01(span(t,2.6+i*0.4,3.2+i*0.4,E.outCubic));
+    l.style.transform=`translateY(${lerp(30,0,clamp01(a))}px)`;});
+  $('foot').style.opacity=span(t,3.6,4.4,E.outCubic)*0.85;
+  // 엔딩 페이드아웃(음악 페이드아웃 동기) 12.8 → 15
+  const out=span(t,12.8,15,E.inOutQuad);
+  document.querySelector('.wrap').style.opacity=lerp(1,0,out);
+  $('foot').style.opacity=lerp($('foot').style.opacity||0,0,out);
+});
+</script>
+</body></html>

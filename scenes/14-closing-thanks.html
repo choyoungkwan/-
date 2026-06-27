@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>클로징 · 감사 텍스트</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+  .wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .sprout{margin-bottom:48px;}
+  .sprout svg{width:120px;height:140px;overflow:visible;}
+  .sprout path{fill:none;stroke:#7fe0ad;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;}
+  .sprout .leaf{fill:#7fe0ad;stroke:none;}
+  .kick{font-size:46px;font-weight:700;color:#9be9c0;letter-spacing:-.01em;margin-bottom:22px;}
+  .main{font-size:104px;font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1.06;text-align:center;
+        text-shadow:0 10px 50px rgba(0,0,0,.4);}
+  .main b{color:#7fe0ad;}
+</style></head>
+<body><div class="stage dark">
+  <div class="grain"></div>
+  <div class="wrap">
+    <div class="sprout"><svg viewBox="0 0 120 140">
+      <path id="stem" d="M60 138 C 60 100, 60 70, 60 30"></path>
+      <path id="lf1" class="leaf" d="M60 78 C 30 76, 16 56, 18 36 C 44 38, 60 56, 60 78 Z"></path>
+      <path id="lf2" class="leaf" d="M60 64 C 90 62, 104 42, 102 22 C 76 24, 60 42, 60 64 Z"></path>
+    </svg></div>
+    <div class="kick" id="kick">우만뜨락에서,</div>
+    <div class="main" id="main">주민의 내일이 <b>자랍니다</b></div>
+  </div>
+</div>
+<script src="../assets/anim.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const stem=$('stem'), SL=stem.getTotalLength(); stem.style.strokeDasharray=SL;
+Scene.define(8,(t,A)=>{
+  const {E,span,lerp,clamp01}=A;
+  // 줄기 자라기
+  stem.style.strokeDashoffset = SL*(1-span(t,.5,1.8,E.outCubic));
+  // 잎 펼침
+  const l1=span(t,1.5,2.2,E.outBack), l2=span(t,1.9,2.6,E.outBack);
+  $('lf1').style.transform=`scale(${clamp01(l1)})`; $('lf1').style.transformOrigin='60px 78px';
+  $('lf2').style.transform=`scale(${clamp01(l2)})`; $('lf2').style.transformOrigin='60px 64px';
+  // 텍스트
+  const k=span(t,2.4,3.2,E.outCubic);
+  $('kick').style.opacity=k; $('kick').style.transform=`translateY(${lerp(16,0,k)}px)`;
+  const m=span(t,2.9,3.9,E.outCubic);
+  $('main').style.opacity=m; $('main').style.transform=`translateY(${lerp(26,0,m)}px)`;
+  // 끝 살짝 페이드(음악 여운)
+  const out=span(t,7.2,8.0,E.inOutQuad);
+  document.querySelector('.wrap').style.opacity=lerp(1,.86,out);
+});
+</script>
+</body></html>

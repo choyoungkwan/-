@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>우만뜨락 모션그래픽 — 미리보기</title>
+<style>
+  @font-face{font-family:'Pretendard';font-weight:400;src:url('assets/fonts/Pretendard-Regular.woff2') format('woff2');}
+  @font-face{font-family:'Pretendard';font-weight:600;src:url('assets/fonts/Pretendard-SemiBold.woff2') format('woff2');}
+  @font-face{font-family:'Pretendard';font-weight:800;src:url('assets/fonts/Pretendard-ExtraBold.woff2') format('woff2');}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Pretendard',sans-serif;background:#11181d;color:#e9eef0;padding:48px 56px 120px;}
+  h1{font-size:40px;font-weight:800;letter-spacing:-.03em;}
+  .sub{color:#8aa0a6;margin-top:10px;font-size:18px;line-height:1.6;}
+  .warn{margin:26px 0 10px;background:#3a2a12;border:1px solid #6b4d1d;color:#f0c98a;
+        padding:18px 22px;border-radius:14px;font-size:16px;font-weight:600;line-height:1.6;}
+  h2{font-size:24px;margin:54px 0 20px;font-weight:800;color:#9be9c0;letter-spacing:-.02em;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:30px;}
+  .card{background:#1a242a;border:1px solid #26343b;border-radius:18px;overflow:hidden;}
+  .framebox{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;}
+  .framebox.ov{background:linear-gradient(135deg,#5b7d8c,#2f4a39 70%);}
+  .framebox iframe{position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;
+    transform:scale(.25);transform-origin:top left;}
+  .meta{padding:16px 20px 18px;}
+  .meta .t{font-size:19px;font-weight:800;letter-spacing:-.02em;}
+  .meta .d{color:#86989e;font-size:14.5px;margin-top:6px;}
+  .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;}
+  .tg{font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;}
+  .tg.cut{background:#243b30;color:#9be9c0;} .tg.tc{background:#2a3640;color:#9fc1cd;}
+  .tg.v{background:#3a2c47;color:#d6b6f0;} .tg.p{background:#15323a;color:#86d6e0;}
+  a.dl{color:#7fe0ad;text-decoration:none;font-weight:700;font-size:14px;}
+  .reload{position:fixed;right:26px;bottom:24px;background:#2f9e6b;color:#fff;border:0;
+    padding:14px 22px;border-radius:999px;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit;}
+</style></head>
+<body>
+  <h1>🎬 우만뜨락 모션그래픽 — 미리보기</h1>
+  <div class="sub">아래 카드는 모두 <b>실시간 재생(반복)</b>됩니다. CapCut으로 가져가기 전에 여기서 먼저 확인하세요.<br>
+    📊 인포그래픽 = 완성 영상(webm) · ✍️ 타이틀/자막 = 투명 PNG 오버레이.</div>
+  <div class="warn">⚠️ 화면의 모든 숫자(고령화율·인구·종사자·예산·이름)는 <b>예시 플레이스홀더</b>입니다.
+    각 <code>scenes/*.html</code> 상단 <code>CONFIG</code> 값을 <b>실제 수치로 교체</b>한 뒤 다시 렌더링하세요.</div>
+
+  <h2>① 데이터 인포그래픽 (완성 영상)</h2>
+  <div class="grid" id="g-info"></div>
+  <h2>② 공간 타이틀 — 투명 PNG 오버레이</h2>
+  <div class="grid" id="g-title"></div>
+  <h2>③ 인터뷰 자막 · 위치 태그 — 투명 PNG 오버레이</h2>
+  <div class="grid" id="g-lower"></div>
+  <h2>④ 클로징 · Before/After</h2>
+  <div class="grid" id="g-close"></div>
+
+  <button class="reload" onclick="location.reload()">↻ 전체 다시 재생</button>
+<script>
+const S=[
+  ['g-info','01-timeline','인포그래픽① · 35년 타임라인 + 고령화율','컷 4 · 0:13–0:24 · 11s','v',true],
+  ['g-info','02-population','인포그래픽② · 인구 수치 카운트업','컷 6 · 0:28–0:39 · 11s','v',true],
+  ['g-info','03-careworkers','인포그래픽③ · 돌봄 종사자 픽토그램','컷 12 · 1:01–1:13 · 12s','v',true],
+  ['g-info','04-budget','인포그래픽④ · 예산 합쳐지는 모션','컷 14 · 1:18–1:30 · 12s','v',true],
+  ['g-title','05-title-eoulcheong','어울청','컷 19 · 1:48–1:52','p',false],
+  ['g-title','06-title-neuti','느티나무','컷 25 · 2:13–2:17','p',false],
+  ['g-title','07-title-kitchen','모두의부엌','컷 31 · 2:38–2:42','p',false],
+  ['g-title','08-title-kkumteo','우만꿈터','컷 37 · 3:03–3:07','p',false],
+  ['g-lower','09-lower-resident','인터뷰 자막 · 이용 주민','컷 43 · 3:28–3:33','p',false],
+  ['g-lower','10-lower-careworker','인터뷰 자막 · 요양보호사','컷 47 · 3:49–3:54','p',false],
+  ['g-lower','11-tag-location','위치 태그 · 수원시 팔달구 우만동','컷 1 · 0:00–0:05','p',false],
+  ['g-close','12-beforeafter','Before / After 분할','컷 51 · 4:10–4:18 · 8s','v',true],
+  ['g-close','14-closing-thanks','클로징 · 감사 텍스트','컷 55 · 4:32–4:40 · 8s','v',true],
+  ['g-close','15-closing-logo','로고 엔딩','컷 56 · 4:40–4:55 · 15s','v',true],
+];
+for(const [g,file,title,desc,kind,vid] of S){
+  const ov = kind==='p';
+  const out = vid ? `out/${file}.webm` : `out/${file}.png`;
+  document.getElementById(g).insertAdjacentHTML('beforeend',`
+   <div class="card">
+     <div class="framebox ${ov?'ov':''}"><iframe loading="lazy" src="scenes/${file}.html"></iframe></div>
+     <div class="meta"><div class="t">${title}</div><div class="d">${desc}</div>
+       <div class="tags"><span class="tg ${vid?'v':'p'}">${vid?'webm 영상':'투명 PNG'}</span>
+         <a class="dl" href="${out}">↓ 렌더 파일</a></div>
+     </div></div>`);
+}
+</script>
+</body></html>
