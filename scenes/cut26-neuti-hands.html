@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷26 느티나무 손(차)</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script><script src="../assets/vign.js"></script>
+<script>
+const V=VIGN.handCloseup({dur:8,sleeve:'#4a86ad',dir:-1,hx:1060,hy:760,scale:2.05,objup:64,
+  bg:'#efe6d0',surface:'#cdb489',surfaceEdge:'#b89a6a',
+  props:`<g opacity=".45"><circle cx="320" cy="360" r="60" fill="#cf8a5e"/><rect x="1480" y="300" width="130" height="150" rx="8" fill="#dfeef6"/></g>
+    <ellipse cx="1060" cy="648" rx="150" ry="34" fill="#b89a6a"/><ellipse cx="1060" cy="640" rx="150" ry="32" fill="#d8c6a2"/>`,
+  obj:(t,An)=>({markup:`<path d="M-44 -14 q0 52 44 52 q44 0 44 -52z" fill="#eef0e6"/><ellipse cx="0" cy="-14" rx="44" ry="13" fill="#a9784f"/>
+     <path d="M44 4 q34 0 34 26 q0 22 -30 22" stroke="#eef0e6" stroke-width="11" fill="none"/>`,
+    dy:Math.sin(t*1.4)*4}),
+  extra:(t,An)=>{const s=document.getElementById('steam');if(s){s.setAttribute('opacity',(0.5+Math.sin(t*2)*0.2));
+     s.setAttribute('transform',`translate(${Math.sin(t*1.6)*8} ${-(t*10)%40})`);}}});
+document.getElementById('art').innerHTML=V.art+`<g id="steam" stroke="#e8e3d2" stroke-width="7" fill="none" stroke-linecap="round" opacity=".0">
+  <path d="M1040 560 q-16 -30 0 -60 q16 -30 0 -60"/><path d="M1080 560 q16 -30 0 -60 q-16 -30 0 -60"/></g>`;
+Scene.define(8,(t,An)=>V.draw(t,An));
+</script></body></html>

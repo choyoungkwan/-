@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷34 모두의부엌 식사</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+function diner(x,y,s,c,h,gray,spoon){return `<g transform="translate(${x} ${y}) scale(${s})">
+  <ellipse cx="0" cy="16" rx="60" ry="13" fill="rgba(60,45,20,.10)"/>
+  <path d="M-46 -150 q46 -26 92 0 l6 150 q-50 16 -100 0z" fill="${c}"/>
+  <g transform="rotate(${spoon} 36 -120)"><rect x="30" y="-150" width="22" height="120" rx="11" fill="${c}"/><circle cx="41" cy="-150" r="13" fill="#ecc4a3"/></g>
+  <rect x="-12" y="-186" width="24" height="42" rx="11" fill="#ecc4a3"/><circle cx="0" cy="-214" r="36" fill="#ecc4a3"/>
+  <path d="M-37 -214 a37 37 0 0 1 74 0 q-8 -18 -37 -18 q-29 0 -37 18z" fill="${gray?'#c3bcae':h}"/></g>`;}
+$('art').innerHTML=`
+  <rect x="-100" y="-100" width="2120" height="700" fill="#f1e8d3"/>
+  <rect x="-100" y="600" width="2120" height="560" fill="#e3d2ae"/>
+  <rect x="-100" y="600" width="2120" height="10" fill="#cfba8f"/>
+  <g id="people"></g>
+  <!-- 식탁 -->
+  <ellipse cx="960" cy="900" rx="540" ry="120" fill="#c59b66"/><ellipse cx="960" cy="876" rx="540" ry="120" fill="#d8ac74"/>
+  <g id="bowls"></g>`;
+$('bowls').innerHTML=[700,860,1020,1180].map(x=>`<g transform="translate(${x} 850)"><ellipse cx="0" cy="0" rx="52" ry="20" fill="#eef0e6"/><ellipse cx="0" cy="-4" rx="40" ry="14" fill="#e7a23c"/></g>`).join('');
+Scene.define(9,(t,An)=>{const {lerp,E}=An;const p=t/9;
+  $('cam').style.transform=`scale(${lerp(1.0,1.05,E.inOutQuad(p))})`;
+  const sp=a=>-20+Math.sin(t*2.4+a)*22;
+  $('people').innerHTML=
+    diner(700,760,1.0,'#cf6b5a','#4a3a2e',false,sp(0))+
+    diner(960,740,1.04,'#4a86ad','#544234',true,sp(1.4))+
+    diner(1220,760,1.0,'#3f9e72','#3a2e25',false,sp(2.6));
+});
+</script></body></html>

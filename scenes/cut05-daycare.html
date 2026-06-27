@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷5 폐관 어린이집</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm">
+  <div class="cam" id="cam"><svg class="ill" id="art">
+    <rect x="-100" y="720" width="2120" height="440" fill="#d6c7a3"/>
+    <!-- 건물 -->
+    <rect x="460" y="220" width="1000" height="510" rx="14" fill="#e4d8bf"/>
+    <rect x="430" y="196" width="1060" height="44" rx="10" fill="#cf8e6e"/>
+    <!-- 간판 -->
+    <rect x="600" y="120" width="720" height="92" rx="14" fill="#5b97b5"/>
+    <text x="960" y="184" text-anchor="middle" font-family="Pretendard" font-weight="800" font-size="56" fill="#fff" opacity=".9">햇살 어린이집</text>
+    <!-- 셔터(내려진) -->
+    <rect x="700" y="360" width="520" height="370" rx="8" fill="#b9bcc0"/>
+    <g id="shut" stroke="#a4a8ad" stroke-width="6"></g>
+    <rect x="700" y="700" width="520" height="30" rx="6" fill="#8f9398"/>
+    <!-- 폐원 안내문 -->
+    <g transform="rotate(-4 940 470)">
+      <rect x="820" y="400" width="240" height="150" rx="6" fill="#fbf6ec" stroke="#d9cdb4" stroke-width="3"/>
+      <rect x="820" y="400" width="240" height="40" fill="#cf6b5a"/>
+      <text x="940" y="429" text-anchor="middle" font-family="Pretendard" font-weight="800" font-size="26" fill="#fff">안내</text>
+      <text x="940" y="490" text-anchor="middle" font-family="Pretendard" font-weight="800" font-size="40" fill="#cf6b5a">폐 원</text>
+      <text x="940" y="528" text-anchor="middle" font-family="Pretendard" font-weight="600" font-size="20" fill="#8a8170">그동안 감사했습니다</text>
+    </g>
+    <!-- 빛바랜 창문 -->
+    <rect x="520" y="320" width="130" height="150" rx="8" fill="#cdbf9b"/>
+    <rect x="1270" y="320" width="130" height="150" rx="8" fill="#cdbf9b"/>
+  </svg></div>
+  <div class="grain"></div><div class="vig"></div>
+</div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+$('shut').innerHTML=[...Array(11)].map((_,i)=>`<line x1="706" y1="${380+i*32}" x2="1214" y2="${380+i*32}"/>`).join('');
+Scene.define(4,(t,An)=>{const {lerp,E}=An;const p=t/4;
+  $('cam').style.transform=`scale(${lerp(1.0,1.06,E.inOutQuad(p))}) translateY(${lerp(0,-8,p)}px)`;});
+</script></body></html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷25 느티나무 와이드</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+$('art').innerHTML=`
+  <rect x="-100" y="-100" width="2120" height="760" fill="#f1e8d3"/>
+  <rect x="-100" y="640" width="2120" height="520" fill="#e6d2ad"/>
+  <rect x="-100" y="640" width="2120" height="10" fill="#d2bd92"/>
+  ${ILL.place(1360,150,1.6,`<rect x="0" y="0" width="300" height="340" rx="8" fill="#cdbf9b"/><rect x="14" y="14" width="272" height="312" rx="4" fill="#e3f0f6"/><rect x="14" y="14" width="272" height="180" fill="#d6ebf4"/><line x1="150" y1="14" x2="150" y2="326" stroke="#cdbf9b" stroke-width="14"/><line x1="14" y1="170" x2="286" y2="170" stroke="#cdbf9b" stroke-width="14"/>`)}
+  <polygon points="1380,170 1700,170 1820,720 1200,720" fill="#fdf0cf" opacity=".55"/>
+  ${ILL.place(250,720,1.5,ILL.plant({s:1}))}
+  ${ILL.place(1720,720,1.3,ILL.plant({s:1}))}
+  <!-- 소파 -->
+  <g transform="translate(620 540)"><rect x="-40" y="40" width="700" height="150" rx="34" fill="#cf8a5e"/>
+    <rect x="-60" y="-40" width="120" height="230" rx="36" fill="#c47e50"/><rect x="600" y="-40" width="120" height="230" rx="36" fill="#c47e50"/>
+    <rect x="40" y="-20" width="240" height="80" rx="20" fill="#dba074"/><rect x="320" y="-20" width="240" height="80" rx="20" fill="#dba074"/></g>
+  <!-- 낮은 테이블 + 찻잔 -->
+  <ellipse cx="960" cy="800" rx="180" ry="40" fill="#b78a55"/><ellipse cx="960" cy="788" rx="180" ry="36" fill="#c59b66"/>
+  <g fill="#eef0e6"><ellipse cx="900" cy="780" rx="26" ry="12"/><ellipse cx="1010" cy="784" rx="26" ry="12"/></g>`;
+Scene.define(8,(t,An)=>{const {lerp,E}=An;const p=t/8;
+  $('cam').style.transform=`scale(${lerp(1.0,1.07,E.inOutQuad(p))}) translateX(${lerp(-16,16,p)}px)`;});
+</script></body></html>

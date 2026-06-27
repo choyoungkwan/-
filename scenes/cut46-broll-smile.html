@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷46 B컷 웃는 표정</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+// 보케 배경 + 클로즈업 인물(미소)
+let bok='';for(let i=0;i<9;i++)bok+=`<circle cx="${180+i*210}" cy="${200+(i%3)*120}" r="${40+i%4*16}" fill="#ffe9b8" opacity=".4"/>`;
+$('art').innerHTML=`<rect x="-100" y="-100" width="2120" height="1280" fill="#efe1c6"/>${bok}
+  <g id="face"></g>`;
+function face(blink){return `<g transform="translate(960 760)">
+  <ellipse cx="0" cy="200" rx="180" ry="60" fill="rgba(60,45,20,.10)"/>
+  <path d="M-150 200 q150 -90 300 0 l0 60 q-150 30 -300 0z" fill="#3f9e72"/>
+  <rect x="-44" y="-90" width="88" height="120" rx="30" fill="#ecc4a3"/>
+  <circle cx="0" cy="-150" r="130" fill="#ecc4a3"/>
+  <path d="M-132 -150 a132 132 0 0 1 264 0 q-26 -64 -132 -64 q-106 0 -132 64z" fill="#c3bcae"/>
+  <ellipse cx="-48" cy="-150" rx="${blink?16:9}" ry="${blink?2:11}" fill="#4a3e34"/>
+  <ellipse cx="48" cy="-150" rx="${blink?16:9}" ry="${blink?2:11}" fill="#4a3e34"/>
+  <circle cx="-86" cy="-110" r="20" fill="#f0b89a" opacity=".6"/><circle cx="86" cy="-110" r="20" fill="#f0b89a" opacity=".6"/>
+  <path d="M-54 -86 q54 60 108 0" stroke="#b07a52" stroke-width="9" fill="none" stroke-linecap="round"/></g>`;}
+Scene.define(5,(t,An)=>{const {lerp,E}=An;const p=t/5;
+  $('cam').style.transform=`scale(${lerp(1.04,1.08,p)})`;
+  const blink=(t%2.6>2.45);
+  $('face').innerHTML=face(blink);
+  $('face').firstElementChild.setAttribute('transform',`translate(960 ${760+Math.sin(t*1.4)*6})`);
+});
+</script></body></html>

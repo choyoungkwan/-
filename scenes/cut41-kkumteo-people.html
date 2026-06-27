@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷41 우만꿈터 세대</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div>
+  <div class="caption low" id="cap" style="opacity:0"><span class="hl">세대를 잇는</span> 배움의 공간</div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+$('art').innerHTML=`
+  <rect x="-100" y="-100" width="2120" height="720" fill="#f1e8d3"/>
+  <rect x="-100" y="620" width="2120" height="540" fill="#e3d2ae"/>
+  <rect x="-100" y="620" width="2120" height="10" fill="#cfba8f"/>
+  ${ILL.place(180,210,0.86,ILL.bookshelf({w:480,h:430}))}
+  ${ILL.place(1330,210,0.86,ILL.bookshelf({w:480,h:430}))}
+  <!-- 벤치 -->
+  <rect x="700" y="760" width="520" height="40" rx="14" fill="#b78a55"/>
+  <rect x="720" y="800" width="24" height="80" fill="#9c7344"/><rect x="1176" y="800" width="24" height="80" fill="#9c7344"/>
+  <g id="adult"></g><g id="child"></g>
+  <!-- 함께 보는 책 -->
+  <g id="book"></g>`;
+function person(x,y,s,c,h,gray){return `<g transform="translate(${x} ${y}) scale(${s})">
+  <ellipse cx="0" cy="14" rx="56" ry="12" fill="rgba(60,45,20,.10)"/>
+  <rect x="-54" y="-24" width="108" height="44" rx="18" fill="${c}"/>
+  <path d="M-44 -148 q44 -24 88 0 l6 130 q-48 16 -96 0z" fill="${c}"/>
+  <rect x="-11" y="-182" width="22" height="40" rx="10" fill="#ecc4a3"/><circle cx="0" cy="-208" r="34" fill="#ecc4a3"/>
+  <path d="M-35 -208 a35 35 0 0 1 70 0 q-8 -17 -35 -17 q-27 0 -35 17z" fill="${gray?'#c3bcae':h}"/>
+  <circle cx="-12" cy="-208" r="3.2" fill="#5a4e44"/><circle cx="12" cy="-208" r="3.2" fill="#5a4e44"/></g>`;}
+Scene.define(9,(t,An)=>{const {lerp,E,span}=An;const p=t/9;
+  $('cam').style.transform=`scale(${lerp(1.04,1.0,p)})`;
+  const point=Math.sin(t*1.6)*3;
+  $('adult').innerHTML=person(820,760,1.0,'#3f9e72','#544234',true);     // 어르신
+  $('child').innerHTML=person(1110,772,0.62,'#e7a23c','#3a2e25',false);  // 아이
+  // 무릎 위 책 (함께 봄)
+  $('book').innerHTML=`<g transform="translate(965 678) rotate(${point})"><path d="M-90 0 q90 -26 180 0 l0 70 q-90 -22 -180 0z" fill="#fbf6ea" stroke="#d8cdb2" stroke-width="3"/>
+    <line x1="0" y1="-18" x2="0" y2="62" stroke="#d8cdb2" stroke-width="3"/></g>`;
+  const c=span(t,4.0,4.9,E.outCubic);$('cap').style.opacity=c;$('cap').style.transform=`translateX(-50%) translateY(${lerp(16,0,c)}px)`;
+});
+</script></body></html>

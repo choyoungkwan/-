@@ -18,7 +18,28 @@ const OUT = path.join(__dirname, 'out');
 const FRAMES = path.join(OUT, 'frames');
 
 // 씬 정의: png 씬은 seek 시각(초)에서 투명 캡처
+const V = f => ({ file: f, type: 'video' });
 const SCENES = [
+  // ── ① 문제 인식 ──
+  V('cut01-skyline.html'), V('cut02-playground.html'), V('cut03-elder-walk.html'),
+  V('cut05-daycare.html'), V('cut07-closed-door.html'), V('cut08-elder-window.html'),
+  // ── ② 변화의 필요성 ──
+  V('cut09-old-space.html'), V('cut10-old-meeting.html'), V('cut11-careworker.html'), V('cut13-corridor.html'),
+  // ── ③ 함께 만든 과정 ──
+  V('cut15-meeting.html'), V('cut16-construction.html'), V('cut17-finishing.html'), V('cut18-reveal.html'),
+  // ── ④ 네 개의 공간 ──
+  V('cut19-eoulcheong-wide.html'), V('cut20-eoulcheong-hands.html'), V('cut22-eoulcheong-people.html'),
+  V('cut25-neuti-wide.html'), V('cut26-neuti-hands.html'), V('cut28-neuti-people.html'),
+  V('cut31-kitchen-wide.html'), V('cut32-kitchen-hands.html'), V('cut34-kitchen-people.html'),
+  V('cut37-kkumteo-wide.html'), V('cut38-kkumteo-hands.html'), V('cut41-kkumteo-people.html'),
+  // ── ⑤ 인터뷰(인용구 카드) + B컷 ──
+  V('cut43-quote-resident1.html'), V('cut44-broll-resident-use.html'),
+  V('cut45-quote-resident2.html'), V('cut46-broll-smile.html'),
+  V('cut47-quote-careworker1.html'), V('cut48-broll-lobby.html'),
+  V('cut49-quote-careworker2.html'), V('cut50-broll-lounge.html'),
+  // ── ⑥ 클로징 B컷 ──
+  V('cut52-after-detail.html'), V('cut53-group-smile.html'), V('cut54-hall.html'),
+  // ── 데이터 인포그래픽 / 오버레이 / 클로징 ──
   { file: '01-timeline.html',        type: 'video' },
   { file: '02-population.html',       type: 'video' },
   { file: '03-careworkers.html',      type: 'video' },

@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷13 좁은 복도</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage">
+  <div class="cam" id="cam"><svg class="ill" id="art">
+    <!-- 원근 복도 -->
+    <rect x="-100" y="-100" width="2120" height="1280" fill="#cfc7b3"/>
+    <polygon points="0,0 1920,0 1180,300 740,300" fill="#d8d0bc"/>
+    <polygon points="0,1080 1920,1080 1180,780 740,780" fill="#b6ac90"/>
+    <polygon points="0,0 0,1080 740,780 740,300" fill="#c4bba0"/>
+    <polygon points="1920,0 1920,1080 1180,780 1180,300" fill="#c4bba0"/>
+    <rect x="740" y="300" width="440" height="480" fill="#d2cab6"/>
+    <!-- 끝 문(빛) -->
+    <rect x="858" y="430" width="204" height="350" rx="4" fill="#e9dec2"/>
+    <rect x="888" y="470" width="144" height="280" rx="4" fill="#f4e7c4"/>
+    <!-- 양옆 문들(원근) -->
+    <g id="doors"></g>
+    <!-- 형광등 -->
+    <rect x="900" y="150" width="120" height="16" rx="6" fill="#eee7cf"/>
+  </svg></div>
+  <div class="grain"></div>
+  <div class="vig" style="background:radial-gradient(110% 90% at 50% 50%, rgba(0,0,0,0) 46%, rgba(20,16,8,.34) 100%)"></div>
+  <div class="caption low" id="cap" style="opacity:0"><span class="hl">쉼과 연결</span>의 공간이 필요했습니다</div>
+</div>
+<script src="../assets/anim.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+// 좌우 벽 문(원근 사다리꼴)
+function doorL(x,y,w,h){return `<polygon points="${x},${y} ${x+w},${y+h*0.16} ${x+w},${y+h*0.84} ${x},${y+h}" fill="#b6ac90" stroke="#a4987c" stroke-width="3"/>`;}
+function doorR(x,y,w,h){return `<polygon points="${x+w},${y} ${x},${y+h*0.16} ${x},${y+h*0.84} ${x+w},${y+h}" fill="#b6ac90" stroke="#a4987c" stroke-width="3"/>`;}
+document.getElementById('doors').innerHTML=
+  doorL(150,380,120,360)+doorL(420,420,110,300)+doorR(1650,380,120,360)+doorR(1390,420,110,300);
+Scene.define(5,(t,An)=>{const {lerp,E,span}=An;const p=t/5;
+  $('cam').style.transform=`scale(${lerp(1.0,1.12,E.inOutQuad(p))})`;  // 끝으로 천천히 다가감
+  const c=span(t,3.0,3.9,E.outCubic);
+  $('cap').style.opacity=c;$('cap').style.transform=`translateX(-50%) translateY(${lerp(16,0,c)}px)`;
+});
+</script></body></html>

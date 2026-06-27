@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷50 B컷 쉼터 휴식</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+function sit(x,y,s,c,h,lean){return `<g transform="translate(${x} ${y}) scale(${s}) rotate(${lean||0} 0 -150)">
+  <ellipse cx="0" cy="16" rx="64" ry="13" fill="rgba(60,45,20,.10)"/>
+  <rect x="-58" y="-24" width="116" height="44" rx="20" fill="${c}"/>
+  <path d="M-46 -150 q46 -26 92 0 l6 132 q-50 16 -100 0z" fill="${c}"/>
+  <rect x="-44" y="-208" width="88" height="96" rx="8" fill="#eef3ee" opacity=".5"/>
+  <rect x="-12" y="-186" width="24" height="42" rx="11" fill="#ecc4a3"/><circle cx="0" cy="-214" r="36" fill="#ecc4a3"/>
+  <path d="M-37 -214 a37 37 0 0 1 74 0 q-8 -18 -37 -18 q-29 0 -37 18z" fill="${h}"/>
+  <circle cx="-13" cy="-214" r="3.2" fill="#5a4e44"/><circle cx="13" cy="-214" r="3.2" fill="#5a4e44"/></g>`;}
+$('art').innerHTML=`<rect x="-100" y="-100" width="2120" height="700" fill="#f1e8d3"/>
+  <rect x="-100" y="640" width="2120" height="520" fill="#e6d2ad"/><rect x="-100" y="640" width="2120" height="10" fill="#d2bd92"/>
+  ${ILL.place(1700,700,1.3,ILL.plant({s:1}))}
+  <g transform="translate(560 540)"><rect x="-40" y="40" width="800" height="160" rx="36" fill="#cf8a5e"/>
+    <rect x="-60" y="-30" width="120" height="230" rx="36" fill="#c47e50"/><rect x="700" y="-30" width="120" height="230" rx="36" fill="#c47e50"/></g>
+  <g id="p"></g>
+  <ellipse cx="960" cy="852" rx="150" ry="32" fill="#b78a55"/><ellipse cx="960" cy="842" rx="150" ry="30" fill="#c59b66"/>
+  <g fill="#eef0e6"><ellipse cx="908" cy="836" rx="20" ry="9"/><ellipse cx="1008" cy="838" rx="20" ry="9"/></g>`;
+Scene.define(5,(t,An)=>{const {lerp,E}=An;const p=t/5;
+  $('cam').style.transform=`scale(${lerp(1.04,1.0,p)})`;
+  $('p').innerHTML=sit(770,700,1.0,'#3f9e72','#4a3a2e',Math.sin(t*1.6)*2+3)+sit(1160,700,1.0,'#3f9e72','#544234',Math.sin(t*1.6+1)*-2-3);
+});
+</script></body></html>

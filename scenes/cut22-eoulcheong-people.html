@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷22 어울청 사람</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+$('art').innerHTML=`
+  <rect x="-100" y="-100" width="2120" height="760" fill="#f0e7d2"/>
+  <rect x="-100" y="700" width="2120" height="460" fill="#dcc9a6"/>
+  <rect x="-100" y="700" width="2120" height="10" fill="#c9b48c"/>
+  <g fill="#cf6b5a" opacity=".6"><rect x="300" y="200" width="60" height="46" rx="6"/><rect x="380" y="200" width="60" height="46" rx="6" fill="#e7a23c"/><rect x="460" y="200" width="60" height="46" rx="6" fill="#3f9e72"/></g>
+  <g id="keeper"></g><g id="cust"></g>
+  <!-- 매대 -->
+  <rect x="760" y="560" width="400" height="180" rx="10" fill="#c59b66"/><rect x="760" y="560" width="400" height="22" rx="10" fill="#d8ac74"/>
+  <g id="item"></g>`;
+Scene.define(9,(t,An)=>{const {lerp,E,span}=An;const p=t/9;
+  $('cam').style.transform=`scale(${lerp(1.0,1.05,E.inOutQuad(p))})`;
+  const nod=Math.sin(t*2.2)*2;
+  $('keeper').innerHTML=`<g transform="translate(720 640) scale(0.95) rotate(${nod} 0 -300)">${ILL.figure({cloth:'#3f9e72',pants:'#6b5d4a',hair:'#4a3a2e',armR:-40,armL:6})}<rect x="-44" y="-210" width="88" height="120" rx="10" fill="#eef3ee" opacity=".85"/></g>`;
+  $('cust').innerHTML=`<g transform="translate(1200 650) scale(0.98) rotate(${-nod} 0 -300)">${ILL.figure({cloth:'#4a86ad',pants:'#54606a',hair:'#3a2e25',armL:42,armR:8,gray:true})}</g>`;
+  // 주고받는 물건
+  const x=lerp(820,1120,span(t,1.5,3.5,E.inOutCubic));
+  $('item').innerHTML=`<g transform="translate(${x} ${540+Math.sin(span(t,1.5,3.5)*Math.PI)*-30})"><rect x="-22" y="-18" width="44" height="36" rx="6" fill="#e7a23c"/><rect x="-12" y="-28" width="24" height="14" rx="4" fill="#fff"/></g>`;
+});
+</script></body></html>

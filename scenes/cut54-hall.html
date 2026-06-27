@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷54 홀 전경</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+$('art').innerHTML=`<rect x="-100" y="-100" width="2120" height="700" fill="#f3ead5"/>
+  <rect x="-100" y="640" width="2120" height="520" fill="#e6d6b4"/><rect x="-100" y="640" width="2120" height="10" fill="#d2bd92"/>
+  <!-- 천창 빛 -->
+  ${[480,960,1440].map(x=>`<polygon points="${x-80},0 ${x+80},0 ${x+200},640 ${x-200},640" fill="#fdf0cf" opacity=".4"/>`).join('')}
+  ${[260,1660].map(x=>ILL.place(x,660,1.3,ILL.plant({s:1}))).join('')}
+  <g id="people"></g>`;
+function walker(x,y,s,c,h,gray){return ILL.place(x,y,s,ILL.figure({cloth:c,hair:h,gray:gray,pants:'#6b5d4a',armL:12,armR:-12}));}
+Scene.define(5,(t,An)=>{const {lerp,E}=An;const p=t/5;
+  $('cam').style.transform=`scale(${lerp(1.05,1.0,p)})`;
+  const a=(-160+(t*150)%2240), b=(2080-(t*120)%2240), c=(400+(t*60)%2240);
+  $('people').innerHTML=walker(a,700,1.05,'#cf6b5a','#4a3a2e')+walker(b,680,0.95,'#3f9e72','#c3bcae',true)+walker(c,720,1.0,'#4a86ad','#544234')+walker(1300,690,0.92,'#e7a23c','#3a2e25');
+});
+</script></body></html>

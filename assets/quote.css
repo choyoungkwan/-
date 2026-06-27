@@ -1,0 +1,9 @@
+.qwrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:1400px;text-align:center;}
+.qmark{font-family:Georgia,'Pretendard',serif;font-size:220px;line-height:.5;color:#3f9e72;height:120px;}
+.qlines{margin-top:30px;}
+.ql{font-size:74px;font-weight:800;letter-spacing:-.03em;color:#243038;line-height:1.32;}
+.qattr{margin-top:60px;font-size:40px;font-weight:700;color:#52606b;display:flex;gap:16px;align-items:center;justify-content:center;}
+.qattr b{color:#1f7a51;font-weight:800;}
+.qdot{width:18px;height:18px;border-radius:50%;background:#e7a23c;box-shadow:0 0 0 6px rgba(231,162,60,.22);}
+.qsep{color:#b6ab90;}
+.qrole{color:#52606b;font-weight:600;}

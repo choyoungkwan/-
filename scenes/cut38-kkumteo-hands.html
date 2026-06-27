@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷38 우만꿈터 손(책장)</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script><script src="../assets/vign.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+// 펼쳐진 책 + 넘어가는 페이지
+$('art').innerHTML=`
+  <rect x="-100" y="-100" width="2120" height="900" fill="#efe6d0"/>
+  <rect x="-100" y="640" width="2120" height="520" fill="#cdb489"/>
+  <rect x="-100" y="640" width="2120" height="10" fill="#b89a6a"/>
+  <g transform="translate(960 560)">
+    <path d="M-440 60 q-20 -90 0 -150 q220 -54 440 0 q220 -54 440 0 q20 60 0 150 q-220 40 -440 0 q-220 40 -440 0z" fill="#c59b66"/>
+    <path d="M-420 44 q-16 -76 0 -130 q200 -46 420 0 l0 130 q-200 -30 -420 0z" fill="#fbf6ea"/>
+    <path d="M420 44 q16 -76 0 -130 q-200 -46 -420 0 l0 130 q200 -30 420 0z" fill="#f4ecda"/>
+    <g stroke="#d8cdb2" stroke-width="4"><line x1="-360" y1="-60" x2="-60" y2="-60"/><line x1="-360" y1="-20" x2="-80" y2="-20"/><line x1="-360" y1="20" x2="-120" y2="20"/>
+       <line x1="80" y1="-60" x2="360" y2="-60"/><line x1="100" y1="-20" x2="360" y2="-20"/></g>
+    <g id="page"></g>
+  </g>
+  <g id="hand"></g>`;
+Scene.define(8,(t,An)=>{const {lerp,E}=An;const p=t/8;
+  $('cam').style.transform=`scale(${lerp(1.05,1.0,p)})`;
+  // 페이지 넘김(스핀): 오른쪽 페이지가 왼쪽으로
+  const ph=(t*0.42)%1; const sx=Math.cos(ph*Math.PI);  // 1 -> -1
+  $('page').innerHTML=`<path d="M0 44 q16 -76 0 -130 q-200 -46 -420 0 l0 130 q200 -30 420 0z" fill="${sx>0?'#f4ecda':'#eadfc8'}" transform="scale(${sx} 1)"/>`;
+  // 손: 오른쪽에서 페이지 끝을 잡음
+  $('hand').innerHTML=ILL.place(1300, 660, 1.7, ILL.forearm({sleeve:'#9c7ab5',dir:-1,rot:24}));
+});
+</script></body></html>

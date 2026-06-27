@@ -1,0 +1,43 @@
+/* ============================================================
+   우만뜨락 일러스트 모션 — 공통 스타일/카메라
+   base.css 위에 얹어 사용 (폰트·자막·grain 재사용)
+   ============================================================ */
+:root{
+  --sky1:#f4ecdb; --sky2:#e8dcc2; --dusk1:#d9dbe0; --dusk2:#c4bfb0;
+  --wall:#efe7d6; --wall-d:#e3d8c2; --floor:#e0d4bd; --floor-d:#cdbd9f;
+  --wood:#c59b66; --wood-d:#a8794a; --metal:#b9bcc0;
+  --skin:#ecc4a3; --skin-d:#d9a982; --hair:#544234; --hairgray:#c3bcae;
+  --cgreen:#3f9e72; --camber:#e7a23c; --cblue:#4a86ad; --cred:#cf6b5a; --cclay:#c88a5e;
+  --leaf:#5cb487; --leaf-d:#3f9e72;
+  --ink2:#243038; --line2:#cdbfa6;
+}
+
+/* 무대 변형: 실외(하늘)·실내(벽) */
+.stage.sky{background:
+  radial-gradient(1400px 900px at 72% -8%, #fffaf0 0%, rgba(255,250,240,0) 58%),
+  linear-gradient(180deg,var(--sky1) 0%, var(--sky2) 100%);}
+.stage.dusk{background:
+  radial-gradient(1200px 800px at 24% 0%, #f2e7cf 0%, rgba(242,231,207,0) 55%),
+  linear-gradient(180deg,var(--dusk1) 0%, var(--dusk2) 100%);}
+.stage.room{background:linear-gradient(180deg,var(--wall) 0%, var(--wall-d) 62%, var(--floor) 62%, var(--floor-d) 100%);}
+.stage.warm{background:
+  radial-gradient(1100px 800px at 70% 8%, #fff6e4 0%, rgba(255,246,228,0) 60%),
+  linear-gradient(160deg,#fbf3e4,#efe3cc);}
+
+/* 카메라: 천천히 줌/팬 (Ken Burns) */
+.cam{position:absolute;inset:0;transform-origin:center center;will-change:transform;}
+.layer{position:absolute;inset:0;}
+
+/* 비네팅 + 따뜻한 라이트 */
+.vig{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 100% at 50% 42%, rgba(0,0,0,0) 58%, rgba(40,30,12,.16) 100%);}
+.sun{position:absolute;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(closest-side, rgba(255,236,180,.5), rgba(255,236,180,0));}
+
+/* 공통 그림자(타원) */
+.shadow-e{fill:rgba(60,45,20,.12);}
+
+/* 자막 위치 살짝 */
+.caption.low{bottom:90px;}
+svg.ill{position:absolute;inset:0;width:1920px;height:1080px;display:block;overflow:visible;}
+.soft{filter:drop-shadow(0 18px 22px rgba(60,45,20,.12));}

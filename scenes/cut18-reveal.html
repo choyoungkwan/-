@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷18 완성 리빌</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage">
+  <div class="cam" id="cam"><svg class="ill" id="art">
+    <rect x="-100" y="-100" width="2120" height="1280" fill="#9c958650"/>
+    <rect x="-100" y="-100" width="2120" height="1280" fill="#867f70"/>
+    <!-- 문틀 -->
+    <rect x="560" y="120" width="800" height="840" rx="6" fill="#6f6859"/>
+    <!-- 밝은 새 공간(문 뒤) -->
+    <g id="inside" transform="translate(600 160)">
+      <rect x="0" y="0" width="720" height="760" fill="#f4ead4"/>
+      <rect x="0" y="540" width="720" height="220" fill="#e2cba2"/>
+      <rect x="60" y="120" width="240" height="300" rx="8" fill="#cdbf9b"/><rect x="74" y="134" width="212" height="272" rx="4" fill="#e7f3ee"/>
+      <g transform="translate(540 560) scale(1.2)"><path d="M-34 0 h68 l-8 54 h-52 z" fill="#c88a5e"/>
+        <path d="M0 -6 C 0 -50 -6 -86 -2 -120" stroke="#3f9e72" stroke-width="7" fill="none"/>
+        <path d="M-2 -70 C -40 -74 -56 -100 -50 -128 C -22 -120 -6 -98 -2 -70Z" fill="#5cb487"/>
+        <path d="M0 -92 C 36 -96 52 -120 46 -148 C 20 -140 4 -118 0 -92Z" fill="#3f9e72"/></g>
+      <rect x="120" y="430" width="220" height="110" rx="16" fill="#cf8a5e"/>
+    </g>
+    <polygon id="spill" points="600,160 1320,160 1620,1080 300,1080" fill="#fff3d6" opacity="0"/>
+    <!-- 문짝 두 개 -->
+    <g id="doorL" style="transform-box:fill-box;transform-origin:left center"><rect x="600" y="160" width="360" height="760" fill="#7d7565"/><rect x="624" y="190" width="312" height="700" rx="4" fill="#8a8170"/><circle cx="930" cy="540" r="12" fill="#cdbf9b"/></g>
+    <g id="doorR" style="transform-box:fill-box;transform-origin:right center"><rect x="960" y="160" width="360" height="760" fill="#7d7565"/><rect x="984" y="190" width="312" height="700" rx="4" fill="#8a8170"/><circle cx="990" cy="540" r="12" fill="#cdbf9b"/></g>
+  </svg></div>
+  <div class="grain"></div><div class="vig"></div>
+  <div class="caption low" id="cap" style="opacity:0">그렇게, <span class="hl">1층이 다시 태어났습니다</span></div>
+</div>
+<script src="../assets/anim.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+Scene.define(6,(t,An)=>{const {lerp,E,span,clamp01}=An;const p=t/6;
+  const open=span(t,.8,3.2,E.inOutCubic);
+  $('doorL').style.transform=`perspective(1400px) scaleX(${lerp(1,0.06,open)})`;
+  $('doorR').style.transform=`perspective(1400px) scaleX(${lerp(1,0.06,open)})`;
+  $('spill').style.opacity=open*0.7;
+  // 빛 들어차며 카메라 천천히 진입
+  $('cam').style.transform=`scale(${lerp(1.0,1.12,E.inOutCubic(p))})`;
+  const c=span(t,3.6,4.6,E.outCubic);
+  $('cap').style.opacity=c;$('cap').style.transform=`translateX(-50%) translateY(${lerp(16,0,c)}px)`;
+});
+</script></body></html>

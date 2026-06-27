@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷37 우만꿈터 와이드</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+$('art').innerHTML=`
+  <rect x="-100" y="-100" width="2120" height="780" fill="#f1e8d3"/>
+  <rect x="-100" y="700" width="2120" height="460" fill="#e3d2ae"/>
+  <rect x="-100" y="700" width="2120" height="10" fill="#cfba8f"/>
+  ${ILL.place(180,250,1.0,ILL.bookshelf({w:520,h:450}))}
+  ${ILL.place(1220,250,1.0,ILL.bookshelf({w:520,h:450}))}
+  <!-- 가운데 둥근 러그 + 낮은 책상 -->
+  <ellipse cx="960" cy="860" rx="420" ry="80" fill="#dcae8f" opacity=".5"/>
+  <ellipse cx="960" cy="780" rx="220" ry="48" fill="#b78a55"/><ellipse cx="960" cy="766" rx="220" ry="44" fill="#c59b66"/>
+  <g><rect x="900" y="724" width="50" height="44" rx="4" fill="#cf6b5a"/><rect x="956" y="728" width="50" height="40" rx="4" fill="#4a86ad"/></g>
+  ${ILL.place(250,712,1.2,ILL.plant({s:1}))}
+  <text x="960" y="180" text-anchor="middle" font-family="Pretendard" font-weight="700" font-size="30" fill="#3f9e72">우만꿈터 작은 도서관</text>`;
+Scene.define(8,(t,An)=>{const {lerp,E}=An;const p=t/8;
+  $('cam').style.transform=`scale(${lerp(1.0,1.07,E.inOutQuad(p))}) translateX(${lerp(-14,14,p)}px)`;});
+</script></body></html>

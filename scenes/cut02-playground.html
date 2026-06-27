@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷2 빈 놀이터</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage dusk">
+  <div class="cam" id="cam"><svg class="ill" id="art">
+    <rect x="-100" y="720" width="2120" height="440" fill="#cdbf9c"/>
+    <ellipse cx="960" cy="742" rx="760" ry="60" fill="#c2b48f"/>
+    <!-- 미끄럼틀 -->
+    <g transform="translate(1320 470)">
+      <rect x="0" y="0" width="26" height="260" rx="8" fill="#b6794f"/>
+      <path d="M20 30 q170 60 230 210 l-44 16 q-54 -132 -200 -184z" fill="#cf8e6e"/>
+      <rect x="-70" y="20" width="14" height="240" rx="6" fill="#b6794f"/>
+      <rect x="-70" y="40" width="96" height="10" rx="5" fill="#a86a44"/>
+      <rect x="-70" y="100" width="96" height="10" rx="5" fill="#a86a44"/>
+      <rect x="-70" y="160" width="96" height="10" rx="5" fill="#a86a44"/>
+    </g>
+    <!-- 그네 -->
+    <g id="swing" transform="translate(520 360)">
+      <line x1="-160" y1="0" x2="-120" y2="360" stroke="#9aa0a6" stroke-width="14" stroke-linecap="round"/>
+      <line x1="160" y1="0" x2="120" y2="360" stroke="#9aa0a6" stroke-width="14" stroke-linecap="round"/>
+      <rect x="-180" y="-12" width="360" height="22" rx="11" fill="#8a9097"/>
+      <g id="sw1"><line x1="-70" y1="6" x2="-70" y2="250" stroke="#7d8389" stroke-width="6"/><line x1="-20" y1="6" x2="-20" y2="250" stroke="#7d8389" stroke-width="6"/><rect x="-78" y="250" width="66" height="14" rx="6" fill="#c98a4e"/></g>
+      <g id="sw2"><line x1="20" y1="6" x2="20" y2="250" stroke="#7d8389" stroke-width="6"/><line x1="70" y1="6" x2="70" y2="250" stroke="#7d8389" stroke-width="6"/><rect x="12" y="250" width="66" height="14" rx="6" fill="#5b97b5"/></g>
+    </g>
+    <!-- 모래밭 -->
+    <ellipse cx="950" cy="780" rx="220" ry="56" fill="#e3cf9d"/>
+    <ellipse cx="950" cy="775" rx="200" ry="46" fill="#ecdcab"/>
+    <!-- 스프링 라이더 -->
+    <g transform="translate(1080 700)"><path d="M0 0 q-10 30 0 60" stroke="#9aa0a6" stroke-width="12" fill="none"/>
+      <ellipse cx="0" cy="-6" rx="46" ry="30" fill="#cf6b5a"/><circle cx="-30" cy="-12" r="8" fill="#fff"/></g>
+    <g id="leaves"></g>
+  </svg></div>
+  <div class="grain"></div><div class="vig"></div>
+</div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+let lv='';for(let i=0;i<10;i++){lv+=`<circle class="lf" cx="${200+i*160}" cy="${600+(i%3)*40}" r="6" fill="#b89a5a" opacity=".7"/>`;}
+$('leaves').innerHTML=lv;
+Scene.define(4,(t,An)=>{
+  const {E,lerp}=An;const p=t/4;
+  $('cam').style.transform=`scale(${lerp(1.03,1.07,p)}) translateX(${lerp(10,-10,p)}px)`;
+  // 빈 그네 미세하게 흔들림
+  $('sw1').setAttribute('transform',`rotate(${Math.sin(t*1.1)*3} -45 6)`);
+  $('sw2').setAttribute('transform',`rotate(${Math.sin(t*1.1+0.6)*2.4} 45 6)`);
+  // 낙엽 천천히 떨어짐
+  [...document.querySelectorAll('.lf')].forEach((l,i)=>{l.setAttribute('cy',600+(i%3)*40 + (t*18+i*30)%160); l.setAttribute('cx', 200+i*160 + Math.sin(t+i)*16);});
+});
+</script></body></html>

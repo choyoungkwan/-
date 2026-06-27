@@ -1,0 +1,17 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷32 모두의부엌 손(도마)</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script><script src="../assets/vign.js"></script>
+<script>
+const V=VIGN.handCloseup({dur:8,sleeve:'#3f9e72',dir:-1,hx:1110,hy:720,scale:2.0,objup:96,rot:6,
+  bg:'#efe6d0',surface:'#cdb489',surfaceEdge:'#b89a6a',
+  props:`<ellipse cx="980" cy="660" rx="240" ry="54" fill="#a8794a"/><ellipse cx="980" cy="648" rx="240" ry="50" fill="#c59b66"/>
+    <g><ellipse cx="900" cy="636" rx="26" ry="14" fill="#e7912e"/><ellipse cx="950" cy="640" rx="26" ry="14" fill="#e7912e"/><ellipse cx="1000" cy="636" rx="26" ry="14" fill="#e7912e"/>
+       <ellipse cx="1060" cy="640" rx="30" ry="16" fill="#cf6b5a"/></g>`,
+  obj:(t,An)=>({markup:`<rect x="-10" y="-104" width="20" height="74" rx="6" fill="#7a5a3a"/><path d="M-14 -30 h44 l-8 44 h-36z" fill="#d2d7da"/>`,
+    dy:-Math.abs(Math.sin(t*4.2))*44})});
+document.getElementById('art').innerHTML=V.art;
+Scene.define(8,(t,An)=>V.draw(t,An));
+</script></body></html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷28 느티나무 담소</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+function sit(x,y,s,c,h,gray,lean){return `<g transform="translate(${x} ${y}) scale(${s}) rotate(${lean||0} 0 -150)">
+  <ellipse cx="0" cy="16" rx="66" ry="14" fill="rgba(60,45,20,.10)"/>
+  <rect x="-60" y="-26" width="120" height="46" rx="20" fill="${c}"/>
+  <path d="M-46 -150 q46 -26 92 0 l6 132 q-50 16 -100 0z" fill="${c}"/>
+  <rect x="-12" y="-186" width="24" height="42" rx="11" fill="#ecc4a3"/><circle cx="0" cy="-214" r="36" fill="#ecc4a3"/>
+  <path d="M-37 -214 a37 37 0 0 1 74 0 q-8 -18 -37 -18 q-29 0 -37 18z" fill="${gray?'#c3bcae':h}"/>
+  <circle cx="-13" cy="-214" r="3.4" fill="#5a4e44"/><circle cx="13" cy="-214" r="3.4" fill="#5a4e44"/></g>`;}
+$('art').innerHTML=`
+  <rect x="-100" y="-100" width="2120" height="760" fill="#f1e8d3"/>
+  <rect x="-100" y="660" width="2120" height="500" fill="#e6d2ad"/>
+  <rect x="-100" y="660" width="2120" height="10" fill="#d2bd92"/>
+  ${ILL.place(1640,680,1.3,ILL.plant({s:1}))}
+  <g transform="translate(560 540)"><rect x="-40" y="40" width="800" height="160" rx="36" fill="#cf8a5e"/>
+    <rect x="-60" y="-30" width="120" height="230" rx="36" fill="#c47e50"/><rect x="700" y="-30" width="120" height="230" rx="36" fill="#c47e50"/></g>
+  <g id="p1"></g><g id="p2"></g>
+  <ellipse cx="960" cy="852" rx="160" ry="34" fill="#b78a55"/><ellipse cx="960" cy="842" rx="160" ry="32" fill="#c59b66"/>
+  <g fill="#eef0e6"><ellipse cx="905" cy="836" rx="22" ry="10"/><ellipse cx="1010" cy="838" rx="22" ry="10"/></g>`;
+Scene.define(9,(t,An)=>{const {lerp,E}=An;const p=t/9;
+  $('cam').style.transform=`scale(${lerp(1.05,1.0,p)}) translateX(${lerp(8,-8,p)}px)`;
+  $('p1').innerHTML=sit(760,700,1.0,'#cf6b5a','#4a3a2e',false,Math.sin(t*2)*2+4);
+  $('p2').innerHTML=sit(1160,700,1.0,'#3f9e72','#544234',true,Math.sin(t*2+1)* -2 -4);
+});
+</script></body></html>

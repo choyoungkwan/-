@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷7 불 꺼진 빈 공간</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage">
+  <div class="cam" id="cam"><svg class="ill" id="art">
+    <rect x="-100" y="-100" width="2120" height="1280" fill="#cdc0a6"/>
+    <!-- 어두운 실내 -->
+    <rect x="0" y="0" width="1920" height="780" fill="#8f8a7c"/>
+    <rect x="0" y="780" width="1920" height="300" fill="#6f6a5d"/>
+    <!-- 문 -->
+    <rect x="760" y="190" width="400" height="600" rx="6" fill="#5d574b"/>
+    <rect x="784" y="214" width="352" height="552" rx="4" fill="#6a6356"/>
+    <rect x="800" y="240" width="320" height="220" rx="4" fill="#5a5448"/>
+    <rect x="800" y="500" width="320" height="240" rx="4" fill="#5a5448"/>
+    <circle cx="1112" cy="500" r="10" fill="#b9b08f"/>
+    <!-- 문틈 빛 -->
+    <rect id="slit" x="760" y="784" width="400" height="8" fill="#f4d98a" opacity=".0"/>
+    <rect id="glow" x="700" y="760" width="520" height="60" fill="url(#g)" opacity=".0"/>
+    <defs><linearGradient id="g" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#f4d98a" stop-opacity=".5"/><stop offset="1" stop-color="#f4d98a" stop-opacity="0"/></linearGradient></defs>
+  </svg></div>
+  <div class="grain"></div>
+  <div class="vig" style="background:radial-gradient(120% 100% at 50% 46%, rgba(0,0,0,0) 40%, rgba(10,8,4,.5) 100%)"></div>
+</div>
+<script src="../assets/anim.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+Scene.define(4,(t,An)=>{const {lerp,E,span}=An;const p=t/4;
+  $('cam').style.transform=`scale(${lerp(1.02,1.07,E.inOutQuad(p))})`;
+  const lit=span(t,1.0,2.6,E.outCubic)*(0.9+Math.sin(t*3)*0.08);
+  $('slit').style.opacity=lit; $('glow').style.opacity=lit*0.9;
+});
+</script></body></html>

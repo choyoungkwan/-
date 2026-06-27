@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷3 걷는 어르신</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm">
+  <div class="cam" id="cam"><svg class="ill" id="art">
+    <!-- 골목: 양옆 담/건물, 바닥 원근 -->
+    <rect x="-100" y="0" width="2120" height="760" fill="#e7dcc4"/>
+    <polygon points="0,760 1920,760 1320,300 600,300" fill="#d8cba9"/>
+    <polygon points="600,300 1320,300 1180,0 740,0" fill="#ccbd98"/>
+    <rect x="0" y="0" width="600" height="760" fill="#d2c4a1"/>
+    <rect x="1320" y="0" width="600" height="760" fill="#d2c4a1"/>
+    <polygon points="600,300 600,760 0,760 0,300" fill="#c7b893" opacity=".5"/>
+    <polygon points="1320,300 1320,760 1920,760 1920,300" fill="#c7b893" opacity=".5"/>
+    <!-- 담장 창문들 -->
+    <g fill="#bfb088"><rect x="120" y="360" width="80" height="110" rx="6"/><rect x="300" y="380" width="80" height="110" rx="6"/>
+      <rect x="1560" y="360" width="80" height="110" rx="6"/><rect x="1740" y="380" width="80" height="110" rx="6"/></g>
+    <g id="elder"></g>
+  </svg></div>
+  <div class="grain"></div><div class="vig"></div>
+</div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+Scene.define(4,(t,An)=>{
+  const {E,lerp}=An;const p=t/4;
+  $('cam').style.transform=`scale(${lerp(1.0,1.08,E.inOutQuad(p))})`;
+  // 어르신 뒷모습, 천천히 멀어짐(작아짐) + 걸음 흔들림
+  const s=lerp(0.92,0.66,p), y=lerp(720,470,p);
+  const bob=Math.sin(t*3.2)*5;
+  $('elder').innerHTML = window.ILL.place(960, y+bob, s, window.ILL.elder({back:true,cane:true,cloth:'#7e8a93'}),
+    `transform-origin="960 ${y}"`);
+});
+</script></body></html>

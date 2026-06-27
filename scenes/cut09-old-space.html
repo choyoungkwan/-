@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷9 개선 전 1층</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage">
+  <div class="cam" id="cam"><svg class="ill" id="art">
+    <rect x="-100" y="-100" width="2120" height="900" fill="#c9c1ad"/>
+    <rect x="-100" y="700" width="2120" height="460" fill="#b3a98f"/>
+    <rect x="-100" y="700" width="2120" height="8" fill="#9f937a"/>
+    <!-- 얼룩/균열 -->
+    <path d="M300 120 q20 120 -10 260" stroke="#a89f86" stroke-width="6" fill="none" opacity=".7"/>
+    <ellipse cx="1500" cy="360" rx="120" ry="160" fill="#b8af96" opacity=".5"/>
+    <path d="M1640 80 q40 200 0 420" stroke="#a89f86" stroke-width="5" fill="none" opacity=".6"/>
+    <!-- 형광등(깜빡) -->
+    <g id="lamp"><rect x="760" y="70" width="400" height="34" rx="8" fill="#d7d2c2"/>
+      <rect x="772" y="78" width="376" height="18" rx="9" fill="#f2eecf" id="tube"/></g>
+    <ellipse id="lampglow" cx="960" cy="120" rx="420" ry="120" fill="#fff4cf" opacity=".0"/>
+    <!-- 낡은 의자 더미 -->
+    <g transform="translate(520 470)">
+      <rect x="0" y="60" width="150" height="160" rx="10" fill="#9c8f73"/><rect x="0" y="0" width="150" height="80" rx="10" fill="#a89a7d"/>
+      <rect x="-12" y="40" width="174" height="22" rx="10" fill="#8a7d63"/>
+    </g>
+    <g transform="translate(560 430) rotate(6)"><rect x="0" y="60" width="150" height="150" rx="10" fill="#a89a7d"/><rect x="0" y="0" width="150" height="78" rx="10" fill="#b3a585"/></g>
+    <!-- 종이박스 -->
+    <g transform="translate(1180 540)"><rect x="0" y="0" width="220" height="150" rx="6" fill="#c9a86f"/><rect x="0" y="0" width="220" height="34" fill="#bd9a5f"/><line x1="110" y1="0" x2="110" y2="150" stroke="#a8854f" stroke-width="4"/></g>
+    <!-- 벽 콘센트/낡은 안내판 -->
+    <rect x="980" y="360" width="180" height="120" rx="6" fill="#bcb298" stroke="#a89f86" stroke-width="4"/>
+  </svg></div>
+  <div class="grain"></div><div class="vig"></div>
+  <div class="caption low" id="cap" style="opacity:0">지역이 변하면, <span class="hl">복지관도 변해야</span> 합니다</div>
+</div>
+<script src="../assets/anim.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+Scene.define(5,(t,An)=>{const {lerp,E,span}=An;const p=t/5;
+  $('cam').style.transform=`scale(${lerp(1.0,1.06,E.inOutQuad(p))}) translateX(${lerp(-14,14,p)}px)`;
+  // 형광등 깜빡임
+  const flick=(Math.sin(t*9)>.7||Math.sin(t*23)>.9)?0.55:1;
+  $('tube').style.opacity=flick; $('lampglow').style.opacity=0.5*flick;
+  const c=span(t,2.8,3.7,E.outCubic);
+  $('cap').style.opacity=c;$('cap').style.transform=`translateX(-50%) translateY(${lerp(16,0,c)}px)`;
+});
+</script></body></html>

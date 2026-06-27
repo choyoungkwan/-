@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷53 단체 컷</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+$('art').innerHTML=`<rect x="-100" y="-100" width="2120" height="720" fill="#f3ead5"/>
+  <rect x="-100" y="700" width="2120" height="460" fill="#e6d6b4"/><rect x="-100" y="700" width="2120" height="10" fill="#d2bd92"/>
+  <text x="960" y="190" text-anchor="middle" font-family="Pretendard" font-weight="900" font-size="58" fill="#3f9e72">우만<tspan fill="#e7a23c">뜨락</tspan></text>
+  ${ILL.place(170,700,1.2,ILL.plant({s:1}))}${ILL.place(1740,700,1.2,ILL.plant({s:1}))}
+  <g id="group"></g>`;
+const ppl=[[420,1.0,'#cf6b5a','#4a3a2e',0],[640,1.06,'#4a86ad','#c3bcae',1],[860,1.0,'#e7a23c','#3a2e25',0],
+  [1080,1.08,'#3f9e72','#544234',0],[1300,1.0,'#9c7ab5','#c3bcae',1],[1500,1.04,'#c88a5e','#4a3a2e',0]];
+function smiler(x,s,c,h,gray,bob){return ILL.place(x,760+bob,s,
+  `<ellipse cx="0" cy="14" rx="56" ry="12" fill="rgba(60,45,20,.10)"/>
+   <path d="M-46 -150 q46 -26 92 0 l6 150 q-50 16 -100 0z" fill="${c}"/>
+   <rect x="-58" y="-296" width="24" height="150" rx="12" fill="${c}" transform="rotate(-26 -46 -296)"/><circle cx="-78" cy="-300" r="14" fill="#ecc4a3"/>
+   <rect x="34" y="-296" width="24" height="150" rx="12" fill="${c}" transform="rotate(26 46 -296)"/><circle cx="78" cy="-300" r="14" fill="#ecc4a3"/>
+   <rect x="-12" y="-186" width="24" height="42" rx="11" fill="#ecc4a3"/><circle cx="0" cy="-214" r="36" fill="#ecc4a3"/>
+   <path d="M-37 -214 a37 37 0 0 1 74 0 q-8 -18 -37 -18 q-29 0 -37 18z" fill="${gray?'#c3bcae':h}"/>
+   <ellipse cx="-13" cy="-214" rx="3.2" ry="6" fill="#4a3e34"/><ellipse cx="13" cy="-214" rx="3.2" ry="6" fill="#4a3e34"/>
+   <path d="M-15 -198 q15 14 30 0" stroke="#b07a52" stroke-width="5" fill="none" stroke-linecap="round"/>`);}
+Scene.define(5,(t,An)=>{const {lerp,E}=An;const p=t/5;
+  $('cam').style.transform=`scale(${lerp(1.0,1.05,E.inOutQuad(p))})`;
+  $('group').innerHTML=ppl.map(([x,s,c,h,g],i)=>smiler(x,s,c,h,g,Math.sin(t*2+i)*4)).join('');
+});
+</script></body></html>

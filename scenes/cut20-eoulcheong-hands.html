@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷20 어울청 손</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm"><div class="cam" id="cam"><svg class="ill" id="art"></svg></div>
+  <div class="grain"></div><div class="vig"></div></div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script><script src="../assets/vign.js"></script>
+<script>
+const V=VIGN.handCloseup({dur:8,sleeve:'#cf6b5a',dir:-1,hx:1040,hy:740,scale:2.2,objup:78,
+  bg:'#f0e7d2',surface:'#d8c6a2',
+  props:`<g opacity=".5"><rect x="240" y="300" width="120" height="90" rx="10" fill="#e7a23c"/><rect x="400" y="320" width="120" height="70" rx="10" fill="#3f9e72"/><rect x="1500" y="300" width="140" height="96" rx="10" fill="#4a86ad"/></g>`,
+  obj:(t,An)=>({markup:`<rect x="-36" y="-52" width="72" height="58" rx="9" fill="#3f9e72"/><rect x="-22" y="-70" width="44" height="22" rx="5" fill="#fff" opacity=".9"/><rect x="-12" y="-22" width="24" height="10" rx="3" fill="#2c7a52"/>`,
+    dy:-34*An.span(t,1.0,3.2,An.E.outCubic)+Math.sin(t*2)*4})});
+document.getElementById('art').innerHTML=V.art;
+Scene.define(8,(t,An)=>V.draw(t,An));
+</script></body></html>

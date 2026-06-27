@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷11 돌봄 노동자</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm">
+  <div class="cam" id="cam"><svg class="ill" id="art">
+    <rect x="-100" y="700" width="2120" height="460" fill="#ddd0b4"/>
+    <rect x="-100" y="700" width="2120" height="8" fill="#cabb96"/>
+    <!-- 벽 라인/문 살짝 -->
+    <rect x="120" y="160" width="240" height="420" rx="8" fill="#e3d7bf"/>
+    <rect x="1560" y="160" width="240" height="420" rx="8" fill="#e3d7bf"/>
+    <g id="worker"></g>
+    <!-- 이동감 모션라인 -->
+    <g id="mlines" stroke="#c9b88f" stroke-width="6" stroke-linecap="round" opacity=".0">
+      <line x1="1240" y1="430" x2="1400" y2="430"/><line x1="1250" y1="500" x2="1380" y2="500"/><line x1="1250" y1="570" x2="1420" y2="570"/></g>
+  </svg></div>
+  <div class="grain"></div><div class="vig"></div>
+</div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+// 앞치마 두른 돌봄 노동자(측면) + 케어백
+function worker(bob){return `<g transform="translate(0 ${bob})">
+  ${ILL.figure({cloth:'#3f9e72',pants:'#54606a',hair:'#4a3a2e',armR:-46,armL:14})}
+  <rect x="-40" y="-220" width="84" height="110" rx="12" fill="#eef3ee" opacity=".9"/>
+  <!-- 케어백 -->
+  <g transform="translate(70 -150)"><rect x="-30" y="-44" width="86" height="92" rx="12" fill="#cf6b5a"/><rect x="-6" y="-10" width="38" height="38" rx="6" fill="#fff"/><rect x="6" y="2" width="14" height="14" fill="#cf6b5a"/><rect x="0" y="8" width="26" height="2" fill="#cf6b5a"/><path d="M-20 -44 q33 -30 66 0" stroke="#a8503f" stroke-width="8" fill="none"/></g>
+</g>`;}
+Scene.define(4,(t,An)=>{const {lerp,E,span}=An;const p=t/4;
+  $('cam').style.transform=`scale(${lerp(1.04,1.0,p)})`;
+  const bob=Math.abs(Math.sin(t*3.4))*-10;
+  const x=lerp(760,1040,E.inOutQuad(p));
+  $('worker').innerHTML=ILL.place(x,720,1.0,worker(bob));
+  $('mlines').style.opacity=span(t,.4,1.2,E.outCubic)*(0.5+Math.abs(Math.sin(t*3.4))*0.5);
+});
+</script></body></html>

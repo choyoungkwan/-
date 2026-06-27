@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷15 주민 의견수렴</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage warm">
+  <div class="cam" id="cam"><svg class="ill" id="art">
+    <rect x="-100" y="660" width="2120" height="500" fill="#e0d4ba"/>
+    <rect x="-100" y="660" width="2120" height="8" fill="#cdbd97"/>
+    <!-- 포스트잇 보드 -->
+    <rect x="700" y="120" width="520" height="220" rx="10" fill="#eee7d2" stroke="#cdbf9b" stroke-width="6"/>
+    <g id="notes"></g>
+    <text x="960" y="105" text-anchor="middle" font-family="Pretendard" font-weight="700" font-size="30" fill="#3f9e72">우리 동네, 이런 공간이 필요해요</text>
+    <!-- 둥근 테이블 -->
+    <ellipse cx="960" cy="820" rx="520" ry="120" fill="#c59b66"/>
+    <ellipse cx="960" cy="800" rx="520" ry="120" fill="#d8ac74"/>
+    <g id="people"></g>
+  </svg></div>
+  <div class="grain"></div><div class="vig"></div>
+</div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+$('notes').innerHTML=[['#f4d98a',740],['#bfe0c4',900],['#f6c0b6',1060],['#bcd6ea',820,1],['#f4d98a',980,1],['#cfe6d2',1110,1]]
+  .map(([c,x,r])=>`<rect x="${x}" y="${150+(r?100:0)}" width="120" height="92" rx="6" fill="${c}" transform="rotate(${(x%7)-3} ${x+60} 196)"/>`).join('');
+// 테이블 둘러앉은 사람들(상반신)
+const seat=(x,y,s,cloth,hair,rais)=>ILL.place(x,y,s,
+  `<ellipse cx="0" cy="10" rx="60" ry="14" fill="rgba(60,45,20,.10)"/>
+   <path d="M-46 -150 q46 -26 92 0 l6 150 q-52 18 -104 0z" fill="${cloth}"/>
+   <g class="arm" data-r="${rais||0}"><rect x="30" y="-150" width="24" height="120" rx="12" fill="${cloth}"/><circle cx="42" cy="-150" r="14" fill="#ecc4a3"/></g>
+   <rect x="-12" y="-186" width="24" height="40" rx="11" fill="#ecc4a3"/><circle cx="0" cy="-214" r="36" fill="#ecc4a3"/>
+   <path d="M-37 -214 a37 37 0 0 1 74 0 q-8 -18 -37 -18 q-29 0 -37 18z" fill="${hair}"/>`);
+$('people').innerHTML=
+  seat(620,880,1,'#cf6b5a','#4a3a2e')+seat(820,910,1.05,'#4a86ad','#5b4a3f')+
+  seat(1100,910,1.05,'#3f9e72','#544234',1)+seat(1300,880,1,'#e7a23c','#3a2e25')+
+  seat(720,760,.82,'#8a9c73','#c3bcae')+seat(1200,760,.82,'#9c7ab5','#4a3a2e');
+Scene.define(4,(t,An)=>{const {lerp,E}=An;const p=t/4;
+  $('cam').style.transform=`scale(${lerp(1.05,1.0,p)})`;
+  // 손 든 사람 팔 흔들기
+  [...document.querySelectorAll('.arm')].forEach(a=>{if(a.dataset.r==='1'){a.setAttribute('transform',`rotate(${-150+Math.sin(t*4)*8} 42 -150)`);}});
+});
+</script></body></html>

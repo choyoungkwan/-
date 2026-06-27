@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷1 단지 전경</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage sky">
+  <div class="sun" style="left:1080px;top:-160px;width:760px;height:760px"></div>
+  <div class="cam" id="cam"><svg class="ill" id="art">
+    <g id="clouds"></g>
+    <g id="city"></g>
+    <rect x="-100" y="700" width="2120" height="460" fill="#d8c9a8"/>
+    <rect x="-100" y="700" width="2120" height="10" fill="#c9b88f"/>
+    <g id="trees"></g>
+    <g id="hedge"></g>
+  </svg></div>
+  <div class="grain"></div><div class="vig"></div>
+  <div class="caption low" id="cap" style="opacity:0"></div>
+</div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL, $=id=>document.getElementById(id);
+// 도시(아파트 단지)
+const blocks=[[120,520,200,'#cabf9f'],[350,610,210,'#d3c7a8'],[600,460,190,'#c3b693'],
+  [820,660,220,'#cdbfa6'],[1080,540,200,'#d6cab0'],[1320,620,210,'#c7ba98'],[1560,490,190,'#d1c4a6']];
+$('city').innerHTML = blocks.map(([x,h,w,c],i)=>
+  ILL.place(x,700-h,1, ILL.building({w,h,color:c,lit:i%2===0}))).join('');
+// 나무
+const tree=(x,s)=>ILL.place(x,702,s,`<ellipse cx="0" cy="8" rx="60" ry="14" fill="rgba(60,45,20,.12)"/>
+  <rect x="-9" y="-70" width="18" height="78" rx="6" fill="#9c7a4e"/>
+  <circle cx="0" cy="-92" r="56" fill="#5cb487"/><circle cx="-38" cy="-66" r="40" fill="#4fa878"/>
+  <circle cx="36" cy="-70" r="42" fill="#52a87a"/><circle cx="0" cy="-120" r="40" fill="#67c193"/>`);
+$('trees').innerHTML=[ [200,1.1],[520,.9],[760,1.15],[1000,.85],[1240,1.05],[1500,.95],[1700,1.1] ]
+  .map(([x,s])=>tree(x,s)).join('');
+// 구름
+const cloud=(x,y,s)=>ILL.place(x,y,s,`<g fill="#fff" opacity=".75"><circle cx="0" cy="0" r="34"/><circle cx="40" cy="6" r="44"/><circle cx="90" cy="0" r="34"/><rect x="-6" y="-2" width="100" height="40" rx="20"/></g>`);
+$('clouds').innerHTML=cloud(260,180,1)+cloud(980,120,1.3)+cloud(1500,220,.9);
+// 전경 생울타리(파랄럭스)
+let hedge='';for(let x=-80;x<2040;x+=92){hedge+=ILL.place(x,930,1,`<circle cx="0" cy="0" r="58" fill="#4fa878"/><circle cx="46" cy="10" r="62" fill="#46a06f"/>`);}
+$('hedge').innerHTML=hedge;
+
+Scene.define(5,(t,An)=>{
+  const {E,lerp,span}=An;
+  const p=t/5;
+  $('cam').style.transform=`translateX(${lerp(34,-34,E.inOutQuad(p))}px) scale(${lerp(1.04,1.08,p)})`;
+  $('clouds').setAttribute('transform',`translate(${lerp(0,40,p)} 0)`);
+  $('hedge').setAttribute('transform',`translate(${lerp(-50,50,E.inOutQuad(p))} 0)`);
+});
+</script></body></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>컷8 창가의 어르신</title>
+<link rel="stylesheet" href="../assets/base.css"><link rel="stylesheet" href="../assets/illus.css"></head>
+<body><div class="stage room">
+  <div class="cam" id="cam"><svg class="ill" id="art">
+    <!-- 벽/바닥 -->
+    <rect x="-100" y="-100" width="2120" height="780" fill="#e6dcc6"/>
+    <rect x="-100" y="660" width="2120" height="520" fill="#d9ccb0"/>
+    <rect x="-100" y="660" width="2120" height="8" fill="#c8b890"/>
+    <!-- 큰 창문 + 빛 -->
+    <g id="win"></g>
+    <polygon id="ray" points="1180,120 1520,120 1760,860 980,860" fill="#fde6b0" opacity=".0"/>
+    <!-- 의자에 앉은 어르신(옆모습) -->
+    <g transform="translate(620 0)">
+      <rect x="-70" y="470" width="150" height="210" rx="14" fill="#b07a4c"/>
+      <rect x="-86" y="300" width="34" height="240" rx="16" fill="#9c6a3f"/>
+      <g id="elder"></g>
+    </g>
+  </svg></div>
+  <div class="grain"></div><div class="vig"></div>
+  <div class="caption low" id="cap" style="opacity:0">마을은 <span class="hl">초고령 사회</span>가 되었습니다</div>
+</div>
+<script src="../assets/anim.js"></script><script src="../assets/illus.js"></script>
+<script>
+const ILL=window.ILL,$=id=>document.getElementById(id);
+$('win').innerHTML = ILL.place(1180,120,1.4, `<rect x="0" y="0" width="300" height="360" rx="8" fill="#cdbf9b"/>
+  <rect x="14" y="14" width="272" height="332" rx="4" fill="#e9f3ef"/>
+  <rect x="14" y="14" width="272" height="200" fill="#dfeef6"/>
+  <line x1="150" y1="14" x2="150" y2="346" stroke="#cdbf9b" stroke-width="14"/>
+  <line x1="14" y1="180" x2="286" y2="180" stroke="#cdbf9b" stroke-width="14"/>`);
+// 앉은 어르신: 발 기준 아님, 의자 위 — 간이 배치
+$('elder').innerHTML = `<ellipse cx="0" cy="690" rx="80" ry="16" fill="rgba(60,45,20,.12)"/>
+  <rect x="-46" y="560" width="120" height="40" rx="18" fill="#8a8f96"/>
+  <rect x="-40" y="470" width="36" height="120" rx="16" fill="#7e848b"/>
+  <rect x="6" y="470" width="36" height="120" rx="16" fill="#7e848b"/>
+  <path d="M-50 360 q60 -28 120 0 q10 110 4 200 q-64 22 -128 0 q-6 -96 4 -200z" fill="#8a8f96"/>
+  <rect x="44" y="380" width="26" height="150" rx="13" fill="#8a8f96"/><circle cx="58" cy="528" r="15" fill="#ecc4a3"/>
+  <rect x="-6" y="318" width="26" height="46" rx="11" fill="#ecc4a3"/>
+  <circle cx="14" cy="288" r="40" fill="#ecc4a3"/>
+  <path d="M-26 286 a40 40 0 0 1 80 -2 q-10 -20 -40 -20 q-30 0 -40 22z" fill="#c3bcae"/>
+  <circle cx="34" cy="286" r="3.6" fill="#5a4e44"/>`;
+Scene.define(5,(t,An)=>{const {lerp,E,span}=An;const p=t/5;
+  $('cam').style.transform=`scale(${lerp(1.0,1.05,E.inOutQuad(p))}) translateX(${lerp(8,-8,p)}px)`;
+  $('ray').style.opacity=span(t,.6,2.2,E.outCubic)*0.85;
+  const c=span(t,3.0,3.9,E.outCubic);
+  $('cap').style.opacity=c;$('cap').style.transform=`translateX(-50%) translateY(${lerp(16,0,c)}px)`;
+});
+</script></body></html>
